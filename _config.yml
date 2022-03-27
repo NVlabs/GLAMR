@@ -1,0 +1,8 @@
+theme: jekyll-theme-minimal
+
+plugins:
+  - jekyll-redirect-from
+
+title: GLAMR
+redirect_from:
+  - https://nvlabs.github.io/glamr/
