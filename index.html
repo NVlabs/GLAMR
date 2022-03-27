@@ -4,11 +4,20 @@
 <head>
     <meta charset="utf-8" />
     <meta content="width=device-width, initial-scale=1" name="viewport" />
-    <link href="assets/favicon.ico" rel="shortcut icon" />
+    <link href="assets/media/favicon.ico" rel="shortcut icon" />
     <title>
-        Watch It Move
+        GLAMR: Global Occlusion-Aware Human Mesh Recovery with Dynamic Cameras
     </title>
     <meta content="GLAMR" property="og:title" />
+    <meta content="We present an approach for 3D global human mesh recovery from monocular videos recorded with dynamic cameras. Our approach is robust to severe and long-term occlusions and tracks human bodies even when they go outside the camera's field of view. To achieve this, we first propose a deep generative motion infiller, which autoregressively infills the body motions of occluded humans based on visible motions. Additionally, in contrast to prior work, our approach reconstructs human meshes in consistent global coordinates even with dynamic cameras. Since the joint reconstruction of human motions and camera poses is underconstrained, we propose a global trajectory predictor that generates global human trajectories based on local body movements. Using the predicted trajectories as anchors, we present a global optimization framework that refines the predicted trajectories and optimizes the camera poses to match the video evidence such as 2D keypoints. Experiments on challenging indoor and in-the-wild datasets with dynamic cameras demonstrate that the proposed approach outperforms prior methods significantly in terms of motion infilling and global mesh recovery." name="description" property="og:description" />
+    <meta content="https://nvlabs.github.io/glamr" property="og:url" />
+    <meta name="keywords" content="Human Pose Estimation, Human Mesh Recovery, GLAMR">
+
+    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="assets/css/fontawesome.all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
+    <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro" rel="stylesheet">
+    <script defer src="assets/js/fontawesome.all.min.js"></script>
 </head>
 
 <body>
@@ -18,6 +27,142 @@
         <h1>
             GLAMR: Global Occlusion-Aware Human Mesh Recovery with Dynamic Cameras
         </h1>
+    </div>
+    <div class="n-byline">
+        <div class="byline">
+            <ul class="authors">
+                <li>
+                    <a href="https://www.ye-yuan.com/" target="_blank">Ye Yuan</a><sup>1, 2</sup>
+                </li>
+                <li>
+                    <a href="http://www.umariqbal.info/" target="_blank">Umar Iqbal</a><sup>1</sup>
+                </li>
+                <li>
+                    <a href="https://research.nvidia.com/person/pavlo-molchanov/" target="_blank">Pavlo Molchanov</a><sup>1</sup>
+                </li>
+                <li>
+                    <a href="http://www.cs.cmu.edu/~kkitani/" target="_blank">Kris Kitani</a><sup>2</sup>
+                </li>
+                <li>
+                    <a href="https://jankautz.com/" target="_blank">Jan Kautz</a><sup>1</sup>
+                </li>
+            </ul>
+            <ul class="authors affiliations">
+                <li>
+                    <sup>
+                        1
+                    </sup>
+                    NVIDIA
+                </li>
+                <li>
+                    <sup>
+                        2
+                    </sup>
+                    Carnegie Mellon University
+                </li>
+            </ul>
+            <ul class="authors venue">
+                <li>
+                    CVPR 2022
+                </li>
+            </ul>
+            <ul class="authors links">
+                <li>
+                    <a href="https://arxiv.org/pdf/2112.01524.pdf" target="_blank">
+                        <button class="btn"><i class="fa fa-file-pdf"></i> Paper</button>
+                    </a>
+                </li>
+                <li>
+                    <a href="https://youtu.be/wpObDXcYueo" target="_blank">
+                        <button class="btn"><i class="fab fa-youtube fa-w-18"></i> Video</button>
+                    </a>
+                </li>
+                <li>
+                    <a href="https://github.com/NVlabs/GLAMR" target="_blank">
+                        <button class="btn"><i class="fab fa-github"></i> Code</button>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="n-article">
+        <div class="n-page video">
+            <video class="centered shadow" width="100%" autoplay muted loop playsinline>
+                <!-- t=0.001 is a hack to make iPhone show video thumbnail -->
+                <source src="assets/media/glamr_teaser.mp4#t=0.001" type="video/mp4" />
+            </video>
+            <div class="videocaption" style="margin-bottom: 1rem">
+                <div>
+                    GLAMR (Left) recovers human meshes in <span class="emph">consistent</span> global coordinates from videos captured by <span class="emph">dynamic cameras</span> and infills missing poses (transparent) due to various
+                    occlusions (obstruction, missed detection, outside field of view), while standard human mesh recovery methods (Right) fail to do so.
+                </div>   
+            </div>
+        </div>
+
+        <h2 id="abstract">
+            Abstract
+        </h2>
+        <p>
+            We present an approach for 3D global human mesh recovery from monocular videos recorded with dynamic cameras. Our approach is robust to severe and long-term occlusions and tracks human bodies even when they go outside the camera's field of view. To achieve this, we first propose a deep generative motion infiller, which autoregressively infills the body motions of occluded humans based on visible motions. Additionally, in contrast to prior work, our approach reconstructs human meshes in consistent global coordinates even with dynamic cameras. Since the joint reconstruction of human motions and camera poses is underconstrained, we propose a global trajectory predictor that generates global human trajectories based on local body movements. Using the predicted trajectories as anchors, we present a global optimization framework that refines the predicted trajectories and optimizes the camera poses to match the video evidence such as 2D keypoints. Experiments on challenging indoor and in-the-wild datasets with dynamic cameras demonstrate that the proposed approach outperforms prior methods significantly in terms of motion infilling and global mesh recovery.
+        </p>
+
+        <h2 id="results">
+            Results
+        </h2>
+        <h3 class="results" id="sample">
+            Generative Motion Infilling with Multiple Samples
+        </h3>
+        <video class="centered shadow" width="100%" autoplay muted loop playsinline>
+            <!-- t=0.001 is a hack to make iPhone show video thumbnail -->
+            <source src="assets/media/glamr_sample.mp4#t=0.001" type="video/mp4" />
+        </video>
+        <div class="videocaption">
+            <div>GLAMR uses generative motion infiller to infill multiple plausible motions for invisible people.</div>
+        </div>
+
+        <h3 class="results">
+            3DPW Sequences
+        </h3>
+        <video class="centered shadow video_without_cap" width="100%" autoplay muted loop playsinline>
+            <!-- t=0.001 is a hack to make iPhone show video thumbnail -->
+            <source src="assets/media/glamr_res1.mp4#t=0.001" type="video/mp4" />
+        </video>
+        <video class="centered shadow video_without_cap" width="100%" autoplay muted loop playsinline>
+            <!-- t=0.001 is a hack to make iPhone show video thumbnail -->
+            <source src="assets/media/glamr_res2.mp4#t=0.001" type="video/mp4" />
+        </video>
+        <video class="centered shadow video_without_cap" width="100%" autoplay muted loop playsinline>
+            <!-- t=0.001 is a hack to make iPhone show video thumbnail -->
+            <source src="assets/media/glamr_res3.mp4#t=0.001" type="video/mp4" />
+        </video>
+        
+        
+        <h2>
+            Narrated Results Video
+        </h2>
+        <div class="videoWrapper shadow">
+            <iframe width="705" height="397" border-style=none src="https://www.youtube.com/embed/oRnnuCVV89o" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+        </div>
+
+        <h2>
+            Overview
+        </h2>
+        <img class="figure" src="assets/media/glamr_overview.png" alt="GLAMR Overview">
+
+        <h2 id="citation">
+            Citation
+        </h2>
+        <pre class="bibtex">
+            <code>
+@inproceedings{yuan2022glamr,
+    title={GLAMR: Global Occlusion-Aware Human Mesh Recovery with Dynamic Cameras},
+    author={Yuan, Ye and Iqbal, Umar and Molchanov, Pavlo and Kitani, Kris and Kautz, Jan},
+    booktitle={Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR)},
+    year={2022}
+}
+            </code></pre>
+
     </div>
 </body>
 
