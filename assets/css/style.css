@@ -27,7 +27,6 @@ body {
 .n-header,
 .n-byline,
 .n-title,
-.n-article,
 .n-footer {
     display: grid;
     justify-items: stretch;
@@ -46,7 +45,6 @@ body {
     .n-header,
     .n-byline,
     .n-title,
-    .n-article,
     .n-footer {
         display: grid;
         justify-items: stretch;
@@ -65,7 +63,6 @@ body {
     .n-header,
     .n-byline,
     .n-title,
-    .n-article,
     .n-footer {
         display: grid;
         justify-items: stretch;
@@ -84,7 +81,6 @@ body {
     .n-header,
     .n-byline,
     .n-title,
-    .n-article,
     .n-footer {
         display: grid;
         justify-items: stretch;
@@ -107,10 +103,6 @@ body {
     grid-column: text;
 }
 
-.n-article>* {
-    grid-column: text;
-}
-
 .n-header {
     height: 0px;
 }
@@ -121,14 +113,6 @@ body {
 
 .n-title {
     padding: 4rem 0 1.5rem;
-}
-
-.l-page {
-    grid-column: page;
-}
-
-.l-article {
-    grid-column: text;
 }
 
 p {
@@ -167,35 +151,6 @@ a:visited {
 @media (min-width: 768px) {
     .n-title h1 {
         font-size: 48px;
-    }
-}
-
-/*------------------------------------------------------------------*/
-/* article */
-.n-article {
-    text-align: justify;
-    color: rgb(33, 40, 53);
-    border-top: 1px solid rgba(0, 0, 0, 0.1);
-    padding-top: 2rem;
-}
-
-.n-article h2 {
-    contain: layout style;
-    font-weight: 600;
-    font-size: 24px;
-    line-height: 1.25em;
-    margin: 2rem 0 1.5rem 0;
-    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
-    padding-bottom: 1rem;
-}
-
-@media (min-width: 768px) {
-    .n-article {
-        line-height: 1.7;
-    }
-
-    .n-article h2 {
-        font-size: 36px;
     }
 }
 
@@ -260,13 +215,6 @@ a:visited {
     margin-bottom: 1rem;
 }
 
-figcaption,
-.figcaption {
-    color: rgba(0, 0, 0, 0.6);
-    font-size: 12px;
-    line-height: 1.5em;
-}
-
 ul.authors {
     list-style-type: none;
     padding: 0;
@@ -317,44 +265,6 @@ ul.authors.links li {
     background-color: green;
 }
 
-/* Download section columns.  This switches between two layouts::after
-- two columns on larger viewport sizes: side-by-side paper thumb and links
-- single column: no thumb
-*/
-.download-section {
-    display: grid;
-    grid-template-areas: "links";
-}
-
-.download-section h4 {
-    margin-left: 2.5rem;
-    display: block;
-}
-
-.download-thumb {
-    grid-area: thumb;
-    display: none;
-}
-
-.download-links {
-    grid-area: links;
-}
-
-img.dropshadow {
-    box-shadow: 0 1px 10px rgba(0, 0, 0, 0.3);
-}
-
-@media(min-width: 1180px) {
-    .download-section {
-        display: grid;
-        grid-template-areas: "thumb links";
-    }
-
-    .download-thumb {
-        display: block;
-    }
-}
-
 /* For BibTeX */
 pre {
     margin-top: 0px;
@@ -393,6 +303,15 @@ pre {
     /* Disable Android and iOS callouts*/
 }
 
+.shadow {
+    box-shadow: 5px 5px 5px  rgba(0, 0, 0, 0.35);
+}
+
+.emph {
+    font-family: Arial, Helvetica, sans-serif;
+    font-weight: bold;
+}
+
 .hidden {
     display: none;
 }
@@ -400,6 +319,13 @@ pre {
 h3.figtitle {
     margin-top: 0;
     margin-bottom: 0;
+}
+
+h3.results {
+    margin-top: 0rem;
+    font-family: Arial, Helvetica, sans-serif;
+    font-weight: bold;
+    font-size: 22px;
 }
 
 .fig-title-line {
@@ -437,42 +363,6 @@ h3.figtitle {
     grid-column-gap: 8px;
 }
 
-.fig-3-image-row {
-    margin-top: 1em;
-    grid-template-columns: 1fr 1.3fr 1fr;
-    grid-template-rows: 1fr;
-}
-
-.fig-3-image-item {
-    justify-self: center;
-    align-self: center;
-    width: 100%;
-    border-radius: var(--larger-thumb-border-radius);
-}
-
-/*---------------------------------------------------------------------*/
-.fig-slider {
-    grid-template-columns: auto 2fr;
-    grid-template-rows: 1fr;
-    margin-top: 1em;
-    align-items: start;
-    justify-content: center;
-}
-
-.fig-slider img.play_button {
-    margin-right: 8px;
-    cursor: pointer;
-    justify-self: center;
-}
-
-.fig-slider svg {
-    touch-action: none;
-}
-
-.fig-preload {
-    display: none;
-}
-
 .videoWrapper {
     position: relative;
     padding-bottom: 56.25%;
@@ -490,23 +380,7 @@ h3.figtitle {
     height: 100%;
 }
 
-.shadow {
-    box-shadow: 5px 5px 5px  rgba(0, 0, 0, 0.35);
-}
-
-.emph {
-    font-family: Arial, Helvetica, sans-serif;
-    font-weight: bold;
-}
-
 .video_without_cap {
     margin-top: 0rem;
     margin-bottom: 1.5rem;
-}
-
-h3.results {
-    margin-top: 0rem;
-    font-family: Arial, Helvetica, sans-serif;
-    font-weight: bold;
-    font-size: 22px;
 }
