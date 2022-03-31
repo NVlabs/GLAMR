@@ -299,8 +299,8 @@ ul.authors.links li {
     background-color: #76B900; /* Blue background */
     border: none; /* Remove borders */
     color: white; /* White text */
-    padding: 8px 16px; /* Some padding */
-    font-size: 16px; /* Set a font size */
+    padding: 8px 12px; /* Some padding */
+	font-size: 14px; /* Set a font size */
     cursor: pointer; /* Mouse pointer on hover */
     border-radius: 18px;
 }
