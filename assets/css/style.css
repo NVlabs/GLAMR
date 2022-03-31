@@ -27,6 +27,7 @@ body {
 .n-header,
 .n-byline,
 .n-title,
+.n-article,
 .n-footer {
     display: grid;
     justify-items: stretch;
@@ -45,6 +46,7 @@ body {
     .n-header,
     .n-byline,
     .n-title,
+    .n-article,
     .n-footer {
         display: grid;
         justify-items: stretch;
@@ -63,6 +65,7 @@ body {
     .n-header,
     .n-byline,
     .n-title,
+    .n-article,
     .n-footer {
         display: grid;
         justify-items: stretch;
@@ -81,6 +84,7 @@ body {
     .n-header,
     .n-byline,
     .n-title,
+    .n-article,
     .n-footer {
         display: grid;
         justify-items: stretch;
@@ -103,6 +107,10 @@ body {
     grid-column: text;
 }
 
+.n-article>* {
+    grid-column: text;
+}
+
 .n-header {
     height: 0px;
 }
@@ -113,6 +121,14 @@ body {
 
 .n-title {
     padding: 4rem 0 1.5rem;
+}
+
+.l-page {
+    grid-column: page;
+}
+
+.l-article {
+    grid-column: text;
 }
 
 p {
@@ -151,6 +167,35 @@ a:visited {
 @media (min-width: 768px) {
     .n-title h1 {
         font-size: 48px;
+    }
+}
+
+/*------------------------------------------------------------------*/
+/* article */
+.n-article {
+    text-align: justify;
+    color: rgb(33, 40, 53);
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
+    padding-top: 2rem;
+}
+
+.n-article h2 {
+    contain: layout style;
+    font-weight: 600;
+    font-size: 24px;
+    line-height: 1.25em;
+    margin: 2rem 0 1.5rem 0;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+    padding-bottom: 1rem;
+}
+
+@media (min-width: 768px) {
+    .n-article {
+        line-height: 1.7;
+    }
+
+    .n-article h2 {
+        font-size: 36px;
     }
 }
 
