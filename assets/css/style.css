@@ -180,6 +180,7 @@ a:visited {
 }
 
 .n-article h2 {
+    text-align: left;
     contain: layout style;
     font-weight: 600;
     font-size: 24px;
