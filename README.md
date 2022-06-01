@@ -1,5 +1,5 @@
 # GLAMR
-<img src="docs/glamr_overview.png" width="800">
+<img src="docs/glamr_teaser.gif" width="800">
 
 This repo contains the official PyTorch implementation of our paper:
   
@@ -10,6 +10,9 @@ GLAMR: Global Occlusion-Aware Human Mesh Recovery with Dynamic Cameras
 
 ---
 **Update (05/31)**: Code for generating the Dynamic Human3.6M dataset is released! Code for the method will be released around CVPR 2022.
+
+# Overview
+<img src="docs/glamr_overview.png" width="800">
 
 # Datasets
 ## Dynamic Human3.6M
