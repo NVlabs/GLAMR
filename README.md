@@ -8,12 +8,113 @@ GLAMR: Global Occlusion-Aware Human Mesh Recovery with Dynamic Cameras
 **CVPR 2022 (Oral)**  
 [website](https://nvlabs.github.io/GLAMR) | [paper](https://arxiv.org/abs/2112.01524) | [video](https://youtu.be/wpObDXcYueo)
 
----
-**Update (05/31)**: Code for generating the Dynamic Human3.6M dataset is released! Code for the method will be released around CVPR 2022.
-
 # Overview
 <img src="docs/glamr_overview.png" width="800">
 
+# Table of Content
+- [Installation](#installation)
+- [Datasets](#datasets)
+- [Motion Infiller](#motion-infiller)
+- [Trajectory Predictor](#trajectory-predictor)
+- [Joint Motion Infiller and Trajectory Predictor](#joint-motion-infiller-and-trajectory-predictor)
+- [Citation](#citation)
+
+# Installation 
+
+### Environment
+* **Tested OS:** MacOS, Linux
+* Python >= 3.7
+* PyTorch == 1.8.0
+
+### Dependencies:
+1. Install [PyTorch 1.8.0](https://pytorch.org/get-started/previous-versions/) with the correct CUDA version.
+2. Install system dependencies (Linux only):
+    ```
+    source install.sh
+    ```
+3. Install python dependencies:
+    ```
+    pip install -r requirements.txt
+    ```
+4. Download [SMPL](https://smpl.is.tue.mpg.de/) models & joint regressors and place them in the `data` folder. You can obtain the model following [SPEC](https://github.com/mkocabas/SPEC)'s instructions [here](https://github.com/mkocabas/SPEC/blob/master/scripts/prepare_data.sh).
+
 # Datasets
-## Dynamic Human3.6M
+We use three datasets: [AMASS](https://amass.is.tue.mpg.de/), [3DPW](https://virtualhumans.mpi-inf.mpg.de/3DPW/), and Dynamic [Human3.6M](http://vision.imar.ro/human3.6m). Please download them from the official website and place them in the `dataset` folder with the following structure:
+```
+${GLAMR_ROOT}
+|-- datasets
+|   |-- 3DPW
+|   |-- amass
+|   |-- H36M
+```
+
+### AMASS
+The following command processes the original [AMASS](https://amass.is.tue.mpg.de/) dataset into a processed version used in the code:
+```
+python preprocess/preprocess_amass.py
+```
+
+### 3DPW
+The following command processes the original [3DPW](https://virtualhumans.mpi-inf.mpg.de/3DPW/) dataset into a processed version used in the code:
+```
+python preprocess/preprocess_3dpw.py
+```
+
+### Dynamic Human3.6M
 Please refer to this [doc](docs/prepare_dynamic_h36m.md) for generating the Dynamic Human3.6M dataset.
+
+
+# Motion Infiller
+To **train** the motion infiller:
+```
+python motion_infiller/train.py --cfg motion_infiller_demo --ngpus 1
+```
+where we use the config [motion_infiller_demo](motion_infiller/cfg/motion_infiller_demo.yml).
+
+---
+
+To **visualize** the trained motion infiller on test data:
+```
+python motion_infiller/vis_motion_infiller.py --cfg motion_infiller_demo --num_seq 5
+```
+where `num_seq` is the number of sequences to visualize. This command will save results videos to `out/vis_motion_infiller`.
+
+# Trajectory Predictor
+To **train** the trajectory predictor:
+```
+python traj_pred/train.py --cfg traj_pred_demo --ngpus 1
+```
+where we use the config [traj_pred_demo](traj_pred/cfg/traj_pred_demo.yml).
+
+---
+
+To **visualize** the trained trajectory predictor on test data:
+```
+python traj_pred/vis_traj_pred.py --cfg traj_pred_demo --num_seq 5
+```
+where `num_seq` is the number of sequences to visualize. This command will save results videos to `out/vis_traj_pred`.
+
+# Joint Motion Infiller and Trajectory Predictor
+For ease of use, we also define a joint (wrapper) model of motion infiller and trajectory predictor, i.e., the model merges the motion infilling and trajectory prediction stages. [The joint model](motion_infiller/models/motion_traj_joint_model.py) composes of pretrained motion infiller and trajectory predictor and is just a convenient abstraction. We can define the joint model using config files such as [joint_motion_traj_demo](motion_infiller/cfg_infer/joint_motion_traj_demo.yml). *The joint model will also be used in the global optimization stage.*
+
+---
+
+To **visualize** the joint model's results:
+```
+python motion_infiller/vis_motion_traj_joint_model.py --cfg joint_motion_traj_demo --num_seq 5
+```
+where `num_seq` is the number of sequences to visualize. This command will save results videos to `out/vis_motion_traj_joint_model`.
+
+# Citation
+If you find our work useful in your research, please cite our paper [GLAMR](https://nvlabs.github.io/GLAMR):
+```bibtex
+@inproceedings{yuan2022glamr,
+    title={GLAMR: Global Occlusion-Aware Human Mesh Recovery with Dynamic Cameras},
+    author={Yuan, Ye and Iqbal, Umar and Molchanov, Pavlo and Kitani, Kris and Kautz, Jan},
+    booktitle={Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR)},
+    year={2022}
+}
+```
+
+# License
+Please see the [license](LICENSE) for further details.

@@ -1,0 +1,70 @@
+results_root_dir: results/traj_pred
+seed: 1
+
+# model
+model_name: traj_pred_vae
+model_specs:
+  nz: 128
+  mlp_htype: relu
+
+  context_encoder:
+    in_mlp:
+      hdim: [512, 256]
+    temporal_net:
+      num_layers: 2
+      type: lstm
+      hdim: 256
+    out_mlp:
+      hdim: [512, 256]
+
+  data_encoder:
+    input: init_heading_coord
+    orient_type: axis_angle
+    pooling: mean
+    append_context: late  # early or late
+    in_mlp:
+      hdim: [512, 256]
+    temporal_net:
+      num_layers: 2
+      type: lstm
+      hdim: 256
+    out_mlp:
+      hdim: [512, 256]
+    fusion_mlp:
+      hdim: [512, 256]
+
+  data_decoder:
+    pooling: mean
+    learn_prior: true
+    out_mlp:
+      hdim: [512, 256]
+    prior_mlp:
+      hdim: [512, 256]
+
+
+# data
+amass_dir: datasets/amass_processed/v1
+max_epochs: 2000
+save_n_epochs: 200
+train_ntime_per_epoch: 2e6
+val_ntime_per_epoch: 2e6
+batch_size: 256
+seq_len: 100
+seq_sampling_method: length
+
+
+
+# loss
+lr: 1.e-4
+gradient_clip_val: 5.0
+
+loss_cfg:
+  trans_mse:
+    weight: 1.0
+  orient_angle:
+    weight: 1.0
+  vae_z_kld:
+    weight: 1.e-3
+    min_clip: 0.0
+  dheading:
+    weight: 0.1

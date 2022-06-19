@@ -3,18 +3,32 @@
 
 import torch
 import numpy as np
+from collections import namedtuple
 from smplx import SMPL as _SMPL
-from smplx.body_models import ModelOutput
 from smplx.lbs import vertices2joints, blend_shapes, batch_rigid_transform, batch_rodrigues
+
+
+ModelOutput = namedtuple('ModelOutput',
+                         ['vertices',
+                          'joints', 'full_pose', 'betas',
+                          'global_orient',
+                          'body_pose', 'expression',
+                          'left_hand_pose', 'right_hand_pose',
+                          'jaw_pose',
+                          'global_trans',
+                          'scale'])
+ModelOutput.__new__.__defaults__ = (None,) * len(ModelOutput._fields)
+
 
 H36M_TO_J17 = [6, 5, 4, 1, 2, 3, 16, 15, 14, 11, 12, 13, 8, 10, 0, 7, 9]
 H36M_TO_J14 = H36M_TO_J17[:14]
 H36M_TO_J15 = [H36M_TO_J17[14]] + H36M_TO_J17[:14]
 H36M_TO_J16 = H36M_TO_J17[14:16] + H36M_TO_J17[:14]
 
-JOINT_REGRESSOR_TRAIN_EXTRA = 'data/smpl_data/J_regressor_extra.npy'
-SMPL_MEAN_PARAMS = 'data/smpl_data/smpl_mean_params.npz'
-SMPL_MODEL_DIR = 'data/smpl_data'
+JOINT_REGRESSOR_TRAIN_EXTRA = 'data/J_regressor_extra.npy'
+JOINT_REGRESSOR_H36M = 'data/J_regressor_h36m.npy'
+SMPL_MEAN_PARAMS = 'data/smpl_mean_params.npz'
+SMPL_MODEL_DIR = 'data/body_models/smpl'
 
 
 # Map joints to SMPL joints
@@ -287,7 +301,6 @@ class SMPL(_SMPL):
             joints = joints[:, self.joint_map, :]
 
         output = ModelOutput(vertices=smpl_output.vertices,
-                             tvertices=smpl_output.tvertices,
                              global_orient=smpl_output.global_orient,
                              body_pose=smpl_output.body_pose,
                              joints=joints,
@@ -299,7 +312,6 @@ class SMPL(_SMPL):
             cur_root_trans = joints[:, [0], :]
             # rel_trans = (root_trans - joints[:, 0, :]).unsqueeze(1)
             output.vertices[:] = (output.vertices - cur_root_trans) * root_scale[:, None, None] + root_trans[:, None, :]
-            output.tvertices[:] = (output.tvertices - cur_root_trans) * root_scale[:, None, None] + root_trans[:, None, :]
             output.joints[:] = (output.joints - cur_root_trans) * root_scale[:, None, None] + root_trans[:, None, :]
         return output
 
@@ -314,10 +326,10 @@ class SMPL(_SMPL):
         batch_size = pose.shape[0]
         J = torch.matmul(self.J_regressor, self.v_template).repeat((batch_size, 1, 1))
         if pose2rot:
-            rot_mats = batch_rodrigues(pose.view(-1, 3), dtype=dtype).view([batch_size, -1, 3, 3])
+            rot_mats = batch_rodrigues(pose.view(-1, 3)).view([batch_size, -1, 3, 3])
         else:
             rot_mats = pose.view(batch_size, -1, 3, 3)
-        joints, A = batch_rigid_transform(rot_mats, J, self.parents, dtype=torch.float32, showpose=False)
+        joints, A = batch_rigid_transform(rot_mats, J, self.parents, dtype=torch.float32)
 
         if transl is not None:
             joints += transl.unsqueeze(dim=1)

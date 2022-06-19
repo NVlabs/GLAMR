@@ -1,0 +1,25 @@
+results_root_dir: results/motion_filler_infer
+seed: 1
+
+model_specs:
+  # motion infiller
+  mfiller_cfg: motion_infiller_demo
+  mfiller_cp: best
+
+  # trajectory predictor
+  trajpred_cfg: traj_pred_demo
+  trajpred_cp: best
+
+# data
+amass_dir: datasets/amass_processed/v1
+seq_len: 300
+seq_sampling_method: length
+data_mask_methods:
+  drop_frames:
+    preserve_first_n: 10
+    min_drop_len: 5
+    max_drop_len: 200
+
+num_motion_samp: 3
+multi_step_mfiller: true
+multi_step_trajpred: false

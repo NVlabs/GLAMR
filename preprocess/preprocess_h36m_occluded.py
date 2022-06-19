@@ -14,7 +14,7 @@ import subprocess
 import cv2 as cv
 
 
-from global_utils.vis import images_to_video, draw_tracks, draw_keypoints
+from lib.utils.vis import images_to_video, draw_tracks, draw_keypoints
 
 
 def gen_sinusoidal_traj(orig_traj, magnitude, period):

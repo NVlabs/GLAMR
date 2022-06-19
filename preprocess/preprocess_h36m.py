@@ -16,8 +16,8 @@ import cv2 as cv
 from collections import defaultdict
 from scipy.interpolate import interp1d
 from lib.models.smpl import SMPL, SMPL_MODEL_DIR
-from global_utils.vis import resize_bbox, images_to_video, draw_tracks, draw_keypoints
-from global_utils.torch_transform import rotation_matrix_to_angle_axis, angle_axis_to_rotation_matrix
+from lib.utils.vis import resize_bbox, images_to_video, draw_tracks, draw_keypoints
+from lib.utils.torch_transform import rotation_matrix_to_angle_axis, angle_axis_to_rotation_matrix
 
 
 genders = {

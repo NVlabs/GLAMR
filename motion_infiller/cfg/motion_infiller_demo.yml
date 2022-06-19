@@ -1,0 +1,96 @@
+results_root_dir: results/motion_filler
+seed: 1
+
+# model
+model_name: motion_infiller_vae
+model_specs:
+  nz: 128
+  past_nframe: 10
+  cur_nframe: 30
+  fut_nframe: 10
+  mlp_htype: relu
+  pose_rep: 'body'
+
+  context_encoder:
+    in_fc: 256
+    transformer:
+      nlayer: 2
+      model_dim: 256
+      nhead: 8
+      ff_dim: 512
+      dropout: 0.1
+      positional_encoding:
+        enc_type: original
+
+  data_encoder:
+    pooling: attn
+    in_fc: 256
+    transformer:
+      nlayer: 2
+      model_dim: 256
+      nhead: 8
+      ff_dim: 512
+      dropout: 0.1
+      positional_encoding: 
+        enc_type: original
+
+  data_decoder:
+    pooling: attn
+    learn_prior: true
+    sep_vis_head: false
+    z_in_query: true
+
+    transformer:
+      nlayer: 2
+      model_dim: 256
+      nhead: 8
+      ff_dim: 512
+      dropout: 0.1
+      positional_encoding:
+        enc_type: original
+
+    out_mlp:
+      hdim: [512, 256]
+    prior_transformer:
+      nlayer: 1
+      model_dim: 256
+      nhead: 8
+      ff_dim: 512
+      dropout: 0.1
+      positional_encoding: 
+        enc_type: original
+    
+
+# data
+amass_dir: datasets/amass_processed/v1
+max_epochs: 2000
+save_n_epochs: 200
+train_ntime_per_epoch: 1e7
+val_ntime_per_epoch: 1e7
+batch_size: 1024
+# methods for producing data_mask
+seq_len: 50
+data_mask_methods:
+  drop_frames:
+    preserve_first_n: 10
+    min_drop_len: 10
+    max_drop_len: 40
+# test data setup
+test_seq_len: 300
+test_data_mask_methods:
+  drop_frames:
+    preserve_first_n: 10
+    min_drop_len: 5
+    max_drop_len: 200
+
+# loss
+lr: 1.e-3
+gradient_clip_val: 5.0
+
+loss_cfg:
+  mse:
+    weight: 1.0
+    body_only: true
+  vae_z_kld:
+    weight: 1.e-3
+    min_clip: 0.0
