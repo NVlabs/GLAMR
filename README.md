@@ -1,5 +1,5 @@
 # GLAMR
-<img src="docs/glamr_teaser.gif" width="800">
+<img src="docs/glamr_teaser.gif" width="100%">
 
 This repo contains the official PyTorch implementation of our paper:
   
