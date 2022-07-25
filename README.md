@@ -9,7 +9,7 @@ GLAMR: Global Occlusion-Aware Human Mesh Recovery with Dynamic Cameras
 [website](https://nvlabs.github.io/GLAMR) | [paper](https://arxiv.org/abs/2112.01524) | [video](https://youtu.be/wpObDXcYueo)
 
 # Overview
-<img src="docs/glamr_overview.png" width="800">
+<img src="docs/glamr_overview.png" width="100%">
 
 # Table of Content
 - [Installation](#installation)
