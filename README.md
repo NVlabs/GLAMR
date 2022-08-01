@@ -29,14 +29,14 @@ GLAMR: Global Occlusion-Aware Human Mesh Recovery with Dynamic Cameras
 * **Tested OS:** MacOS, Linux
 * Python >= 3.7
 * PyTorch >= 1.8.0
-* [HybrIK](https://github.com/Khrylx/HybrIK) (used in demo)
+* [HybrIK](https://github.com/Jeff-sjtu/HybrIK) (used in demo)
 
 ### Dependencies
 1. Clone this repo recursively:
     ```
     git clone --recursive https://github.com/NVlabs/GLAMR.git
     ```
-    This will fetch the submodule [HybrIK](https://github.com/Khrylx/HybrIK).
+    This will fetch the submodule [HybrIK](https://github.com/Jeff-sjtu/HybrIK).
 2. Install [PyTorch 1.8.0](https://pytorch.org/get-started/previous-versions/) with the correct CUDA version.
 3. Install system dependencies (Linux only):
     ```
@@ -67,7 +67,7 @@ python global_recon/run_demo.py --cfg glamr_dynamic \
                                 --out_dir out/glamr_dynamic/running \
                                 --save_video
 ```
-This will output results to `out/glamr_dynamic/running`. Results videos will be saved to `out/glamr_dynamic/running/grecon_videos`. Additional dynamic test videos can be found in [assets/dynamic](assets/dynamic). More video comparison with [HybrIK](https://github.com/Khrylx/HybrIK) are available [here](https://drive.google.com/drive/folders/1BCkIBZGgDox_bMZUxHD--s0eK-ded4J7?usp=sharing).
+This will output results to `out/glamr_dynamic/running`. Results videos will be saved to `out/glamr_dynamic/running/grecon_videos`. Additional dynamic test videos can be found in [assets/dynamic](assets/dynamic). More video comparison with [HybrIK](https://github.com/Jeff-sjtu/HybrIK) are available [here](https://drive.google.com/drive/folders/1BCkIBZGgDox_bMZUxHD--s0eK-ded4J7?usp=sharing).
 
 <img src="docs/running_glamr_vs_hybrik.gif" width="100%">
 
@@ -79,7 +79,7 @@ python global_recon/run_demo.py --cfg glamr_static \
                                 --out_dir out/glamr_static/basketball \
                                 --save_video
 ```
-This will output results to `out/glamr_dynamic/basketball`. Results videos will be saved to `out/glamr_dynamic/basketball/grecon_videos`. Additional static test videos can be found in [assets/static](assets/static). More video comparison with [HybrIK](https://github.com/Khrylx/HybrIK) are available [here](https://drive.google.com/drive/folders/1B9q_tczSpb62ozL1iMGe9If2XEKQ3xnE?usp=sharing).
+This will output results to `out/glamr_dynamic/basketball`. Results videos will be saved to `out/glamr_dynamic/basketball/grecon_videos`. Additional static test videos can be found in [assets/static](assets/static). More video comparison with [HybrIK](https://github.com/Jeff-sjtu/HybrIK) are available [here](https://drive.google.com/drive/folders/1B9q_tczSpb62ozL1iMGe9If2XEKQ3xnE?usp=sharing).
 
 <img src="docs/basketball_glamr_vs_hybrik.gif" width="100%">
 
