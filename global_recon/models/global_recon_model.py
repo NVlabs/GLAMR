@@ -243,7 +243,7 @@ class GlobalReconOptimizer:
         visible = pose_dict['visible']
         quat = angle_axis_to_quaternion(pose_dict['smpl_orient_cam'])
         d_angle = quat_angle_diff(quat[1:], quat[:-1])
-        angle_threshold = 0.5
+        angle_threshold = np.pi / 3
         ind = torch.where((d_angle > angle_threshold) & visible[1:].bool())[0] + 1
         for i in ind:
             if visible[i - 1]:
