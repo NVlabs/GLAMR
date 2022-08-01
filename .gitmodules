@@ -1,0 +1,3 @@
+[submodule "HybrIK"]
+	path = HybrIK
+	url = https://github.com/Jeff-sjtu/HybrIK.git

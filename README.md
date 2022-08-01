@@ -62,7 +62,10 @@ We provide demos for single-person video with both dynamic and static cameras.
 ### Dynamic Videos
 Run the following command to test GLAMR on a single-person video with **dynamic** camera:
 ```
-python global_recon/run_demo.py --cfg glamr_dynamic --video_path assets/dynamic/running.mp4 --out_dir out/glamr_dynamic/running --save_video
+python global_recon/run_demo.py --cfg glamr_dynamic \
+                                --video_path assets/dynamic/running.mp4 \
+                                --out_dir out/glamr_dynamic/running \
+                                --save_video
 ```
 This will output results to `out/glamr_dynamic/running`. Results videos will be saved to `out/glamr_dynamic/running/grecon_videos`. Additional dynamic test videos can be found in [assets/dynamic](assets/dynamic). More video comparison with [HybrIK](https://github.com/Khrylx/HybrIK) are available [here](https://drive.google.com/drive/folders/1BCkIBZGgDox_bMZUxHD--s0eK-ded4J7?usp=sharing).
 
@@ -71,7 +74,10 @@ This will output results to `out/glamr_dynamic/running`. Results videos will be 
 ### Static Videos
 Run the following command to test GLAMR on a single-person video with **static** camera:
 ```
-python global_recon/run_demo.py --cfg glamr_static --video_path assets/static/basketball.mp4 --out_dir out/glamr_static/basketball --save_video
+python global_recon/run_demo.py --cfg glamr_static \
+                                --video_path assets/static/basketball.mp4 \
+                                --out_dir out/glamr_static/basketball \
+                                --save_video
 ```
 This will output results to `out/glamr_dynamic/basketball`. Results videos will be saved to `out/glamr_dynamic/basketball/grecon_videos`. Additional static test videos can be found in [assets/static](assets/static). More video comparison with [HybrIK](https://github.com/Khrylx/HybrIK) are available [here](https://drive.google.com/drive/folders/1B9q_tczSpb62ozL1iMGe9If2XEKQ3xnE?usp=sharing).
 
