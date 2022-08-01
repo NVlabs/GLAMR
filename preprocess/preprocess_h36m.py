@@ -305,7 +305,7 @@ def make_seq_videos(image_path, pose_path, bbox_path, video_path):
                     kp = pose_dict['person_data'][idx]['j2d_body26fk'][find]
                     img = draw_tracks(img, bbox, idx, per_bbox_dict['score'][find])
                     img = draw_keypoints(img, kp[:, :2], kp[:, 2])
-            cv.imwrite(f'{frame_dir}/{find:06d}.png', img)
+            cv.imwrite(f'{frame_dir}/{find:06d}.jpg', img)
 
         images_to_video(frame_dir, vid_out_file, fps=30, verbose=False)
         shutil.rmtree(frame_dir)

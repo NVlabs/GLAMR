@@ -8,6 +8,7 @@ import shutil
 import platform
 import tempfile
 import pyrender
+import cv2 as cv
 from lib.utils.vis import images_to_video, make_checker_board_texture, nparray_to_vtk_matrix
 
 
@@ -21,6 +22,8 @@ class Visualizer3D:
         self.add_cube = add_cube
         self.verbose = verbose
         self.pl = None
+        self.interactive = True
+        self.hide_env = False
         # animation control
         self.fr = 0
         self.num_fr = 1
@@ -34,6 +37,8 @@ class Visualizer3D:
         self.distance = distance
         self.elevation = elevation
         self.azimuth = azimuth
+        # background
+        self.background_img = None
     
     def init_camera(self):
         # self.pl.camera_position = 'yz'
@@ -44,11 +49,16 @@ class Visualizer3D:
         # self.pl.camera.zoom(1.0)
 
     def set_camera_instrinsics(self, fx=None, fy=None, cx=None, cy=None, z_near=0.1, zfar=1000):
-        if None in (fx, fy, cx, cy):
-            wsize =  np.array(self.pl.window_size)
-            if platform.system() == 'Darwin':
-                wsize //= 2
+        wsize =  np.array(self.pl.window_size)
+        if platform.system() == 'Darwin':
+            wsize //= 2
+            if not (fx is None and fy is None):
+                fx *= 0.5
+                fy *= 0.5
+
+        if fx is None and fy is None:
             fx = fy = wsize.max()
+        if cx is None and cy is None:
             cx, cy = 0.5 * wsize
 
         intrinsic_cam = pyrender.IntrinsicsCamera(fx, fy, cx, cy, z_near, zfar)
@@ -57,8 +67,9 @@ class Visualizer3D:
         self.pl.camera.SetUseExplicitProjectionTransformMatrix(1)
 
     def init_scene(self, init_args):
-        # self.pl.set_background('#DBDAD9')
-        self.pl.set_background('#FCC2EB', top='#C9DFFF')    # Classic Rose -> Lavender Blue
+        if not self.hide_env:
+            # self.pl.set_background('#DBDAD9')
+            self.pl.set_background('#FCC2EB', top='#C9DFFF')    # Classic Rose -> Lavender Blue
         # shadow
         if self.enable_shadow:
             self.pl.enable_shadows()
@@ -186,6 +197,7 @@ class Visualizer3D:
             last_render_time = time.time()
 
     def show_animation(self, window_size=(800, 800), init_args=None, enable_shadow=None, frame_mode='fps', fps=30, repeat=False, show_axes=True):
+        self.interactive = True
         self.frame_mode = frame_mode
         self.fps = fps
         self.repeat = repeat
@@ -208,9 +220,19 @@ class Visualizer3D:
         self.fr = fr
         self.update_scene()
         self.render(interactive=False)
-        self.pl.screenshot(img_path)
+        if self.background_img is not None:
+            img = self.pl.screenshot(transparent_background=True, return_img=True)
+            alpha = img[..., [3]] / 255.0
+            fg_img = cv.cvtColor(img[..., :3], cv.COLOR_RGB2BGR)
+            bg_img = cv.imread(self.background_img)
+            c_img = fg_img * alpha + bg_img * (1 - alpha)
+            cv.imwrite(img_path, c_img)
+        else:
+            self.pl.screenshot(img_path)
+
 
     def save_animation_as_video(self, video_path, init_args=None, window_size=(800, 800), enable_shadow=None, fps=30, crf=25, frame_dir=None, cleanup=True):
+        self.interactive = False
         if platform.system() == 'Linux':
             pyvista.start_xvfb()
         if enable_shadow is not None:
@@ -227,7 +249,7 @@ class Visualizer3D:
             os.makedirs(frame_dir)
         os.makedirs(osp.dirname(video_path), exist_ok=True)
         for fr in range(self.num_fr):
-            self.save_frame(fr, f'{frame_dir}/{fr:06d}.png')
+            self.save_frame(fr, f'{frame_dir}/{fr:06d}.jpg')
         images_to_video(frame_dir, video_path, fps=fps, crf=crf, verbose=self.verbose)
         if cleanup:
             shutil.rmtree(frame_dir)

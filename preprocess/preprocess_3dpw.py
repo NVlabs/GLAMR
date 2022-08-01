@@ -180,7 +180,7 @@ def make_seq_videos(data_path, processed_path, video_path, split='all'):
                 if find in per_bbox_dict['exist_frames']:
                     bbox = per_bbox_dict['bbox'][find]
                     img = draw_tracks(img, bbox, idx, per_bbox_dict['score'][find])
-            cv.imwrite(f'{frame_dir}/{find:06d}.png', img)
+            cv.imwrite(f'{frame_dir}/{find:06d}.jpg', img)
 
         images_to_video(frame_dir, vid_out_file, fps=30, verbose=False)
         shutil.rmtree(frame_dir)

@@ -18,21 +18,44 @@ font_files = {
 }
 
 
-def images_to_video(img_dir, out_path, img_fmt="%06d.png", fps=30, crf=25, verbose=True):
+def get_video_width_height(video_file):
+    vcap = cv.VideoCapture(video_file)
+    img_w  = int(vcap.get(3))
+    img_h = int(vcap.get(4))
+    return img_w, img_h
+
+
+def get_video_num_fr(video_file):
+    vcap = cv.VideoCapture(video_file)
+    num_fr  = int(vcap.get(cv.CAP_PROP_FRAME_COUNT))
+    return num_fr
+
+
+def get_video_fps(video_file):
+    vcap = cv.VideoCapture(video_file)
+    fps = vcap.get(cv.CAP_PROP_FPS)
+    return fps
+
+
+def images_to_video(img_dir, out_path, img_fmt="%06d.jpg", fps=30, crf=25, verbose=True):
     os.makedirs(osp.dirname(out_path), exist_ok=True)
     cmd = [FFMPEG_PATH, '-y', '-r', f'{fps}', '-f', 'image2', '-start_number', '0',
             '-i', f'{img_dir}/{img_fmt}', '-vcodec', 'libx264', '-crf', f'{crf}', '-pix_fmt', 'yuv420p', out_path]
     if not verbose:
         cmd += ['-hide_banner', '-loglevel', 'error']
-    subprocess.run(cmd)
+    p = subprocess.run(cmd)
+    if p.returncode != 0:
+        raise Exception('Something went wrong during images_to_video!')
 
 
-def video_to_images(video_path, out_path, img_fmt="%06d.png", fps=30, verbose=True):
+def video_to_images(video_path, out_path, img_fmt="%06d.jpg", fps=30, verbose=True):
     os.makedirs(out_path, exist_ok=True)
     cmd = [FFMPEG_PATH, '-i', video_path, '-r', f'{fps}', f'{out_path}/{img_fmt}']
     if not verbose:
         cmd += ['-hide_banner', '-loglevel', 'error']
-    subprocess.run(cmd)
+    p = subprocess.run(cmd)
+    if p.returncode != 0:
+        raise Exception('Something went wrong during video_to_images!')
 
 
 def hstack_videos(video1_path, video2_path, out_path, crf=25, verbose=True, text1=None, text2=None, text_color='white', text_size=60):
@@ -84,6 +107,75 @@ def vstack_videos(video1_path, video2_path, out_path, crf=25, verbose=True, text
         subprocess.run(cmd)
         os.remove(tmp_file)
 
+
+def vstack_video_arr(video_arr, out_path, crf=25, verbose=True, text_arr=None, text_color='white', text_size=60):
+    assert len(video_arr) > 1
+    tmp_file1 = f'{osp.splitext(out_path)[0]}_tmp1.mp4'
+    tmp_file2 = f'{osp.splitext(out_path)[0]}_tmp2.mp4'
+
+    height = np.array([get_video_width_height(x)[1] for x in video_arr])
+    start_h = np.concatenate([np.array([0]), np.cumsum(height)[:-1]])
+
+    os.makedirs(osp.dirname(out_path), exist_ok=True)
+
+    for i in range(1, len(video_arr)):
+        prev_video = video_arr[0] if i == 1 else tmp_file1
+        cmd = [FFMPEG_PATH, '-y', '-i', prev_video, '-i', video_arr[i], '-filter_complex', 'vstack,format=yuv420p', 
+            '-vcodec', 'libx264', '-crf', f'{crf}', tmp_file2]
+        if not verbose:
+            cmd += ['-hide_banner', '-loglevel', 'error']
+        subprocess.run(cmd)
+        tmp_file1, tmp_file2 = tmp_file2, tmp_file1
+
+    if text_arr is not None:
+        font_file = font_files[platform.system()]
+        draw_str = ','.join([f"drawtext=fontsize={text_size}:fontfile={font_file}:fontcolor={text_color}:text='{x}':x=10:y={h}+20" for h, x in zip(start_h, text_arr)])
+        cmd = [FFMPEG_PATH, '-i', tmp_file1, '-y', '-vf', draw_str, '-c:a', 'copy', out_path]
+        if not verbose:
+            cmd += ['-hide_banner', '-loglevel', 'error']
+        subprocess.run(cmd)
+    else:
+        os.rename(tmp_file1, out_path)
+    
+    if os.path.exists(tmp_file1):
+        os.remove(tmp_file1)
+    if os.path.exists(tmp_file2):
+        os.remove(tmp_file2)
+
+
+def hstack_video_arr(video_arr, out_path, crf=25, verbose=True, text_arr=None, text_color='white', text_size=60):
+    assert len(video_arr) > 1
+    tmp_file1 = f'{osp.splitext(out_path)[0]}_tmp1.mp4'
+    tmp_file2 = f'{osp.splitext(out_path)[0]}_tmp2.mp4'
+
+    width = np.array([get_video_width_height(x)[0] for x in video_arr])
+    start_w = np.concatenate([np.array([0]), np.cumsum(width)[:-1]])
+
+    os.makedirs(osp.dirname(out_path), exist_ok=True)
+
+    for i in range(1, len(video_arr)):
+        prev_video = video_arr[0] if i == 1 else tmp_file1
+        cmd = [FFMPEG_PATH, '-y', '-i', prev_video, '-i', video_arr[i], '-filter_complex', 'hstack,format=yuv420p', 
+            '-vcodec', 'libx264', '-crf', f'{crf}', tmp_file2]
+        if not verbose:
+            cmd += ['-hide_banner', '-loglevel', 'error']
+        subprocess.run(cmd)
+        tmp_file1, tmp_file2 = tmp_file2, tmp_file1
+
+    if text_arr is not None:
+        font_file = font_files[platform.system()]
+        draw_str = ','.join([f"drawtext=fontsize={text_size}:fontfile={font_file}:fontcolor={text_color}:text='{x}':x={w}+10:y=20" for w, x in zip(start_w, text_arr)])
+        cmd = [FFMPEG_PATH, '-i', tmp_file1, '-y', '-vf', draw_str, '-c:a', 'copy', out_path]
+        if not verbose:
+            cmd += ['-hide_banner', '-loglevel', 'error']
+        subprocess.run(cmd)
+    else:
+        os.rename(tmp_file1, out_path)
+    
+    if os.path.exists(tmp_file1):
+        os.remove(tmp_file1)
+    if os.path.exists(tmp_file2):
+        os.remove(tmp_file2)
 
 
 def make_checker_board_texture(color1='black', color2='white', width=1000, height=1000):

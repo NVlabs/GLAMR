@@ -13,9 +13,9 @@ from pytorch_lightning.callbacks import ModelCheckpoint
 from pytorch_lightning.loggers import TensorBoardLogger, WandbLogger
 from torch.utils.data import DataLoader
 from motion_infiller.data.amass_dataset import AMASSDataset
-from lib.utils.logging import TextLogger
 from traj_pred.models import model_dict
 from traj_pred.utils.config import Config
+from lib.utils.logging import TextLogger
 from lib.utils.tools import worker_init_fn, find_last_version, get_checkpoint_path
 
 
@@ -102,7 +102,7 @@ checkpoint_best_cb = ModelCheckpoint(
     filename='model-best-{epoch:04d}',
     save_last=True,
     save_top_k=1,
-    mode='min',
+    mode='min'
 )
 callbacks = [checkpoint_epoch_cb, checkpoint_best_cb]
 
@@ -113,7 +113,7 @@ trainer = pl.Trainer(
     logger=loggers,
     callbacks=callbacks,
     gpus=gpu_ids if gpu_ids is not None else args.ngpus,
-    auto_select_gpus=True,
+    auto_select_gpus=False,
     accelerator='ddp' if args.ngpus > 1 else None,
     precision=args.precision,
     resume_from_checkpoint=resume_cp,

@@ -11,8 +11,12 @@ GLAMR: Global Occlusion-Aware Human Mesh Recovery with Dynamic Cameras
 # Overview
 <img src="docs/glamr_overview.png" width="100%">
 
+# News
+- **[08/01/22]**: [Demos](#demo) for dynamic and static videos are released!
+
 # Table of Content
 - [Installation](#installation)
+- [Demo](#demo)
 - [Datasets](#datasets)
 - [Motion Infiller](#motion-infiller)
 - [Trajectory Predictor](#trajectory-predictor)
@@ -24,19 +28,54 @@ GLAMR: Global Occlusion-Aware Human Mesh Recovery with Dynamic Cameras
 ### Environment
 * **Tested OS:** MacOS, Linux
 * Python >= 3.7
-* PyTorch == 1.8.0
+* PyTorch >= 1.8.0
+* [HybrIK](https://github.com/Khrylx/HybrIK) (used in demo)
 
-### Dependencies:
-1. Install [PyTorch 1.8.0](https://pytorch.org/get-started/previous-versions/) with the correct CUDA version.
-2. Install system dependencies (Linux only):
+### Dependencies
+1. Clone this repo recursively:
+    ```
+    git clone --recursive https://github.com/NVlabs/GLAMR.git
+    ```
+    This will fetch the submodule [HybrIK](https://github.com/Khrylx/HybrIK).
+2. Install [PyTorch 1.8.0](https://pytorch.org/get-started/previous-versions/) with the correct CUDA version.
+3. Install system dependencies (Linux only):
     ```
     source install.sh
     ```
-3. Install python dependencies:
+4. Install python dependencies:
     ```
     pip install -r requirements.txt
     ```
-4. Download [SMPL](https://smpl.is.tue.mpg.de/) models & joint regressors and place them in the `data` folder. You can obtain the model following [SPEC](https://github.com/mkocabas/SPEC)'s instructions [here](https://github.com/mkocabas/SPEC/blob/master/scripts/prepare_data.sh).
+5. Download [SMPL](https://smpl.is.tue.mpg.de/) models & joint regressors and place them in the `data` folder. You can obtain the model following [SPEC](https://github.com/mkocabas/SPEC)'s instructions [here](https://github.com/mkocabas/SPEC/blob/master/scripts/prepare_data.sh).
+
+### Pretrained Models
+* You can download pretrained models from [Google Drive](https://drive.google.com/file/d/1_3h0DExyHkPH9cv1O8Y42YPI3c08G-2b/view?usp=sharing) or [BaiduYun](https://pan.baidu.com/s/1nvSzfuffB5yBaZ3GRBDC5w?pwd=pj3z).
+* Once the `glamr_models.zip` file is downloaded, unzipping it will create the `results` folder:
+  ```
+  unzip glamr_models.zip
+  ```
+  Note that the pretrained models directly correspond to the config files for the [motion infiller](motion_infiller/cfg) and [trajectory predictor](traj_pred/cfg).
+
+# Demo
+
+We provide demos for single-person video with both dynamic and static cameras.
+### Dynamic Videos
+Run the following command to test GLAMR on a single-person video with **dynamic** camera:
+```
+python global_recon/run_demo.py --cfg glamr_dynamic --video_path assets/dynamic/running.mp4 --out_dir out/glamr_dynamic/running --save_video
+```
+This will output results to `out/glamr_dynamic/running`. Results videos will be saved to `out/glamr_dynamic/running/grecon_videos`. Additional dynamic test videos can be found in [assets/dynamic](assets/dynamic). More video comparison with [HybrIK](https://github.com/Khrylx/HybrIK) are available [here](https://drive.google.com/drive/folders/1BCkIBZGgDox_bMZUxHD--s0eK-ded4J7?usp=sharing).
+
+<img src="docs/running_glamr_vs_hybrik.gif" width="100%">
+
+### Static Videos
+Run the following command to test GLAMR on a single-person video with **static** camera:
+```
+python global_recon/run_demo.py --cfg glamr_static --video_path assets/static/basketball.mp4 --out_dir out/glamr_static/basketball --save_video
+```
+This will output results to `out/glamr_dynamic/basketball`. Results videos will be saved to `out/glamr_dynamic/basketball/grecon_videos`. Additional static test videos can be found in [assets/static](assets/static). More video comparison with [HybrIK](https://github.com/Khrylx/HybrIK) are available [here](https://drive.google.com/drive/folders/1B9q_tczSpb62ozL1iMGe9If2XEKQ3xnE?usp=sharing).
+
+<img src="docs/basketball_glamr_vs_hybrik.gif" width="100%">
 
 # Datasets
 We use three datasets: [AMASS](https://amass.is.tue.mpg.de/), [3DPW](https://virtualhumans.mpi-inf.mpg.de/3DPW/), and Dynamic [Human3.6M](http://vision.imar.ro/human3.6m). Please download them from the official website and place them in the `dataset` folder with the following structure:
