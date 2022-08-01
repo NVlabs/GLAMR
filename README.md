@@ -37,6 +37,7 @@ GLAMR: Global Occlusion-Aware Human Mesh Recovery with Dynamic Cameras
     git clone --recursive https://github.com/NVlabs/GLAMR.git
     ```
     This will fetch the submodule [HybrIK](https://github.com/Jeff-sjtu/HybrIK).
+2. Follow HybrIK's installation [instructions](https://github.com/Jeff-sjtu/HybrIK#installation-instructions) and download its [models](https://github.com/Jeff-sjtu/HybrIK#download-models).
 2. Install [PyTorch 1.8.0](https://pytorch.org/get-started/previous-versions/) with the correct CUDA version.
 3. Install system dependencies (Linux only):
     ```
