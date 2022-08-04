@@ -22,7 +22,7 @@ parser.add_argument('--cfg', default='glamr_static')
 parser.add_argument('--video_path', default='assets/static/basketball.mp4')
 parser.add_argument('--out_dir', default='out/glamr_static/basketball')
 parser.add_argument('--pose_est_dir', default=None)
-parser.add_argument('--seed', type=int, default="1")
+parser.add_argument('--seed', type=int, default=1)
 parser.add_argument('--gpu', type=int, default=0)
 parser.add_argument('--cached', type=int, default=1)
 parser.add_argument('--vis', action='store_true', default=False)
@@ -116,7 +116,7 @@ if args.save_video:
     visualizer.save_animation_as_video(video_cam, window_size=(img_w, img_h), cleanup=True)
 
     log.info(f'saving side-by-side animation for {seq_name}')
-    hstack_video_arr([pose_est_video, video_cam, video_world], video_sbs, text_arr=[pose_est_model_name, 'GLAMR (Cam)', 'GLAMR (World)'], text_color='blue', text_size=img_h // 12, verbose=False)
+    hstack_video_arr([pose_est_video, video_cam, video_world], video_sbs, text_arr=[pose_est_model_name, 'GLAMR (Cam)', 'GLAMR (World)'], text_color='blue', text_size=img_h // 16, verbose=False)
         
 
 

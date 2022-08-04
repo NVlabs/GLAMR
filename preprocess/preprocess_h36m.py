@@ -328,8 +328,8 @@ if __name__=='__main__':
     if args.video:
         make_seq_videos(f'{args.h36m_folder}/images_25fps', f'{args.h36m_out_folder}/pose', f'{args.h36m_out_folder}/bbox', f'{args.h36m_out_folder}/video')
     else:
-        smpl_fit_data = joblib.load(f'{args.h36m_folder}/H36M/smpl_fit/h36m_train_60_fitted_grad.pkl')
-        test_smpl_fit_data = joblib.load(f'{args.h36m_folder}/H36M/smpl_fit/h36m_test_60_fitted_grad.pkl')
+        smpl_fit_data = joblib.load(f'{args.h36m_folder}/smpl_fit/h36m_train_60_fitted_grad.pkl')
+        test_smpl_fit_data = joblib.load(f'{args.h36m_folder}/smpl_fit/h36m_test_60_fitted_grad.pkl')
         smpl_fit_data.update(test_smpl_fit_data)
         for sub in subjects:
             convert_h36m(args.h36m_folder, args.h36m_out_folder, sub, smpl_fit_data, args.use_smpl_fit, args.convert_image, args.cached)

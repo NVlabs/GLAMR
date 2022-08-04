@@ -5,7 +5,6 @@ grecon_model_name: global_recon_model
 grecon_model_specs:
   motion_traj_cfg: joint_motion_traj_demo
   # flags
-  use_gt: false
   est_type: hybrik
   flag_infer_motion_traj: true
   flag_pred_traj: true
@@ -55,7 +54,7 @@ opt_stage_specs:
       cam_inv_trans_residual_reg:
         weight: 1.e+2
 
-      # smoothness loss
+      # camera loss
       cam_inv_rot_smoothness:
         weight: 1.e+1
       cam_origin_smoothness:

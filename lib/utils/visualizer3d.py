@@ -223,6 +223,7 @@ class Visualizer3D:
         if self.background_img is not None:
             img = self.pl.screenshot(transparent_background=True, return_img=True)
             alpha = img[..., [3]] / 255.0
+            alpha[alpha > 0.0] = 1.0
             fg_img = cv.cvtColor(img[..., :3], cv.COLOR_RGB2BGR)
             bg_img = cv.imread(self.background_img)
             c_img = fg_img * alpha + bg_img * (1 - alpha)

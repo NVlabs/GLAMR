@@ -50,7 +50,7 @@ GLAMR: Global Occlusion-Aware Human Mesh Recovery with Dynamic Cameras
 5. Download [SMPL](https://smpl.is.tue.mpg.de/) models & joint regressors and place them in the `data` folder. You can obtain the model following [SPEC](https://github.com/mkocabas/SPEC)'s instructions [here](https://github.com/mkocabas/SPEC/blob/master/scripts/prepare_data.sh).
 
 ### Pretrained Models
-* You can download third-party pretrained models from [Google Drive](https://drive.google.com/file/d/1_3h0DExyHkPH9cv1O8Y42YPI3c08G-2b/view?usp=sharing) or [BaiduYun](https://pan.baidu.com/s/1nvSzfuffB5yBaZ3GRBDC5w?pwd=pj3z).
+* You can download [third-party](https://github.com/YanglanOu) pretrained models from [Google Drive](https://drive.google.com/file/d/1_3h0DExyHkPH9cv1O8Y42YPI3c08G-2b/view?usp=sharing) or [BaiduYun](https://pan.baidu.com/s/1nvSzfuffB5yBaZ3GRBDC5w?pwd=pj3z).
 * Once the `glamr_models.zip` file is downloaded, unzipping it will create the `results` folder:
   ```
   unzip glamr_models.zip

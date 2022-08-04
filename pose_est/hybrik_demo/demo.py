@@ -186,11 +186,11 @@ for img_path in tqdm(img_path_list):
     pts = uv_29 * bbox_xywh[2]
     pts[:, 0] = pts[:, 0] + bbox_xywh[0]
     pts[:, 1] = pts[:, 1] + bbox_xywh[1]
-    image = input_image.copy()
-    bbox_img = vis_2d(image, tight_bbox, pts)
-    bbox_img = cv2.cvtColor(bbox_img, cv2.COLOR_RGB2BGR)
-    res_path = os.path.join(opt.out_dir, 'res_2d_images', f'{frame_idx:06d}.jpg')
-    cv2.imwrite(res_path, bbox_img)
+    # image = input_image.copy()
+    # bbox_img = vis_2d(image, tight_bbox, pts)
+    # bbox_img = cv2.cvtColor(bbox_img, cv2.COLOR_RGB2BGR)
+    # res_path = os.path.join(opt.out_dir, 'res_2d_images', f'{frame_idx:06d}.jpg')
+    # cv2.imwrite(res_path, bbox_img)
 
     bboxes.append(np.array(bbox_xywh))
 
@@ -237,4 +237,4 @@ images_to_video(f'{opt.out_dir}/res_images', f'{opt.out_dir}/render.mp4', img_fm
 # images_to_video(f'{opt.out_dir}/res_2d_images', f'{opt.out_dir}/render_kp2d.mp4', img_fmt='%06d.jpg')
 
 shutil.rmtree(f'{opt.out_dir}/res_images')
-shutil.rmtree(f'{opt.out_dir}/res_2d_images')
+# shutil.rmtree(f'{opt.out_dir}/res_2d_images')
