@@ -633,12 +633,12 @@ class SMPLJoints:
         self.name[self.spine1]         = "spine1"
         self.name[self.spine2]         = "spine2"
         self.name[self.spine3]         = "spine3"
-        self.name[self.left_collar]    = "right_ear"
-        self.name[self.right_collar]   = "left_eye"
-        self.name[self.left_hand]      = "left_ear"
-        self.name[self.right_hand]     = "right_heel"
-        self.name[self.left_foot]     = "left_heel"
-        self.name[self.right_foot] = "left_heel"
+        self.name[self.left_collar]    = "left_collar"
+        self.name[self.right_collar]   = "right_collar"
+        self.name[self.left_hand]      = "left_hand"
+        self.name[self.right_hand]     = "right_hand"
+        self.name[self.left_foot]     = "left_foot"
+        self.name[self.right_foot] = "right_foot"
 
 
 def get_joints_info(pose_type):
