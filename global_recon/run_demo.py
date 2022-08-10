@@ -77,7 +77,7 @@ if cached and osp.exists(out_file):
 else:
     est_dict = pickle.load(open(pose_est_file, 'rb'))
     temp_dict = {}
-    if cfg.multi:
+    if args.multi:
         for person_id in range(len(est_dict)):
             temp_dict[person_id] = est_dict[person_id]
         est_dict = temp_dict
