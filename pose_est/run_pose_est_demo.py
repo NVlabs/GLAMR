@@ -9,7 +9,7 @@ import yaml
 from lib.utils.vis import video_to_images
 
 
-def run_pose_est_on_video(video_file, output_dir, pose_est_model, cached_pose, gpu_index=0, multi=False):
+def run_pose_est_on_video(video_file, output_dir, pose_est_model, cached_pose, gpu_index=0, multi=0):
     if pose_est_model == 'hybrik':
         if not (cached_pose and osp.exists(f'{output_dir}/pose.pkl')):
             image_folder = osp.join(output_dir, 'frames')
