@@ -55,8 +55,8 @@ parser.add_argument('--gpu',
                     type=int)
 parser.add_argument('--multi',
                     help='multi-person',
-                    default=False,
-                    type=bool)
+                    default=0,
+                    type=int)
 parser.add_argument('--img_folder',
                     help='image name',
                     default='',
