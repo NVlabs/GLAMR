@@ -111,7 +111,7 @@ for file in tqdm(files):
         img_path = os.path.join(opt.img_folder, file)
         img_path_list.append(img_path)
 
-if cfg.multi:
+if opt.multi:
 
     from multi_person_tracker import MPT
 
