@@ -49,7 +49,7 @@ os.makedirs(render_path, exist_ok=True)
 if args.pose_est_dir is None:
     pose_est_dir = f'{args.out_dir}/pose_est'
     log.info(f"running {cfg.grecon_model_specs['est_type']} pose estimation on {args.video_path}...")
-    run_pose_est_on_video(args.video_path, pose_est_dir, cfg.grecon_model_specs['est_type'], cached, args.gpu)
+    run_pose_est_on_video(args.video_path, pose_est_dir, cfg.grecon_model_specs['est_type'], cached, args.gpu, args.multi)
 else:
     pose_est_dir = args.pose_est_dir
 pose_est_model_name = {'hybrik': 'HybrIK'}[cfg.grecon_model_specs['est_type']]
