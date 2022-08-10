@@ -25,6 +25,7 @@ parser.add_argument('--pose_est_dir', default=None)
 parser.add_argument('--seed', type=int, default=1)
 parser.add_argument('--gpu', type=int, default=0)
 parser.add_argument('--cached', type=int, default=1)
+parser.add_argument('--multi', type=int, default=0)
 parser.add_argument('--vis', action='store_true', default=False)
 parser.add_argument('--vis_cam', action='store_true', default=False)
 parser.add_argument('--save_video', action='store_true', default=False)
@@ -48,7 +49,7 @@ os.makedirs(render_path, exist_ok=True)
 if args.pose_est_dir is None:
     pose_est_dir = f'{args.out_dir}/pose_est'
     log.info(f"running {cfg.grecon_model_specs['est_type']} pose estimation on {args.video_path}...")
-    run_pose_est_on_video(args.video_path, pose_est_dir, cfg.grecon_model_specs['est_type'], cached, args.gpu)
+    run_pose_est_on_video(args.video_path, pose_est_dir, cfg.grecon_model_specs['est_type'], cached, args.gpu, args.multi)
 else:
     pose_est_dir = args.pose_est_dir
 pose_est_model_name = {'hybrik': 'HybrIK'}[cfg.grecon_model_specs['est_type']]
@@ -75,11 +76,15 @@ if cached and osp.exists(out_file):
     out_dict = pickle.load(open(out_file, 'rb'))
 else:
     est_dict = pickle.load(open(pose_est_file, 'rb'))
+    temp_dict = {}
+    if args.multi:
+        for person_id in range(len(est_dict)):
+            temp_dict[person_id] = est_dict[person_id]
+        est_dict = temp_dict
     in_dict = {'est': est_dict, 'gt': dict(), 'gt_meta': dict(), 'seq_name': seq_name}
     # global optimization
     out_dict = grecon_model.optimize(in_dict)
     pickle.dump(out_dict, open(out_file, 'wb'))
-
 
 if (args.vis and args.vis_cam) or args.save_video:
     frame_dir = f'{pose_est_dir}/frames'
@@ -117,8 +122,3 @@ if args.save_video:
 
     log.info(f'saving side-by-side animation for {seq_name}')
     hstack_video_arr([pose_est_video, video_cam, video_world], video_sbs, text_arr=[pose_est_model_name, 'GLAMR (Cam)', 'GLAMR (World)'], text_color='blue', text_size=img_h // 16, verbose=False)
-        
-
-
-
-
