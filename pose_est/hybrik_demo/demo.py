@@ -149,7 +149,7 @@ if opt.multi:
     for person_id in tracking_results:
         bbox_exist[person_id-1] = [0 for _ in range(len(img_path_list))]
 
-    for frame_idx in range(len(img_path_list)):
+    for frame_idx in tqdm(range(len(img_path_list))):
 
         img_path = img_path_list[frame_idx]
         dirname = os.path.dirname(img_path)
@@ -346,7 +346,8 @@ else:
 
 
 new_dict = dict()
-for k, v in out_dict.items():
+for k in sorted(out_dict.keys()):
+    v = out_dict[k]
     new_dict[k] = dict()
     for ck, cv in v.items():
         new_dict[k][ck] = cv

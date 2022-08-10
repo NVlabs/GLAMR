@@ -12,6 +12,7 @@ GLAMR: Global Occlusion-Aware Human Mesh Recovery with Dynamic Cameras
 <img src="docs/glamr_overview.png" width="100%">
 
 # News
+- **[08/10/22]**: [Demos](#multi-person-videos) for multi-person videos are added (Thanks to [Haofan Wang](https://haofanwang.github.io/))!
 - **[08/01/22]**: [Demos](#demo) for dynamic and static videos are released!
 
 # Table of Content
@@ -59,7 +60,7 @@ GLAMR: Global Occlusion-Aware Human Mesh Recovery with Dynamic Cameras
 
 # Demo
 
-We provide demos for single-person video with both dynamic and static cameras.
+We provide demos for single- and multi-person video with both dynamic and static cameras.
 ### Dynamic Videos
 Run the following command to test GLAMR on a single-person video with **dynamic** camera:
 ```
@@ -80,9 +81,22 @@ python global_recon/run_demo.py --cfg glamr_static \
                                 --out_dir out/glamr_static/basketball \
                                 --save_video
 ```
-This will output results to `out/glamr_dynamic/basketball`. Results videos will be saved to `out/glamr_dynamic/basketball/grecon_videos`. Additional static test videos can be found in [assets/static](assets/static). More video comparison with [HybrIK](https://github.com/Jeff-sjtu/HybrIK) are available [here](https://drive.google.com/drive/folders/1B9q_tczSpb62ozL1iMGe9If2XEKQ3xnE?usp=sharing).
+This will output results to `out/glamr_static/basketball`. Results videos will be saved to `out/glamr_static/basketball/grecon_videos`. Additional static test videos can be found in [assets/static](assets/static). More video comparison with [HybrIK](https://github.com/Jeff-sjtu/HybrIK) are available [here](https://drive.google.com/drive/folders/1B9q_tczSpb62ozL1iMGe9If2XEKQ3xnE?usp=sharing).
 
 <img src="docs/basketball_glamr_vs_hybrik.gif" width="100%">
+
+### Multi-Person Videos
+Use the `--multi` flag and the `glamr_static_multi` config in the above demos to test GLAMR on a **multi-person** video:
+```
+python global_recon/run_demo.py --cfg glamr_static_multi \
+                                --video_path assets/static/basketball.mp4 \
+                                --out_dir out/glamr_static_multi/basketball \
+                                --save_video \
+                                --multi
+```
+This will output results to `out/glamr_static_multi/basketball`. Results videos will be saved to `out/glamr_static_multi/basketball/grecon_videos`.
+
+<img src="docs/basketball_glamr_multi.gif" width="100%">
 
 # Datasets
 We use three datasets: [AMASS](https://amass.is.tue.mpg.de/), [3DPW](https://virtualhumans.mpi-inf.mpg.de/3DPW/), and Dynamic [Human3.6M](http://vision.imar.ro/human3.6m). Please download them from the official website and place them in the `dataset` folder with the following structure:

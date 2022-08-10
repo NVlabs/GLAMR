@@ -1,0 +1,90 @@
+dataset: demo
+
+# recon model
+grecon_model_name: global_recon_model
+grecon_model_specs:
+  motion_traj_cfg: joint_motion_traj_demo
+  # flags
+  est_type: hybrik
+  flag_infer_motion_traj: true
+  flag_pred_traj: true
+  flag_opt_traj: true
+  flag_opt_cam: true
+  flag_fixed_cam: true
+
+
+opt_stage_specs:
+
+  init_opt:
+
+    opt_lr: 1.e-1
+    opt_niters: 200
+    opt_variables:  ['local_xy', 'local_heading']
+
+    loss_cfg:
+      rel_transform:
+        trans_weight: 0.0
+        weight: 200
+        first_frame_only: true
+
+      kp_2d:
+        weight: 1.0
+        min_conf: 0.3
+        first_frame_only: true
+      kp_2d_dist:
+        weight: 1.0
+        min_conf: 0.3
+        monitor_only: true
+        first_frame_only: true
+
+      cam_traj_rot:
+        rot_type: 6d
+        weight: 1.e+5
+        first_frame_only: true
+
+  
+  main_opt:
+
+    opt_lr: 1.e-4
+    opt_niters: 500
+    opt_variables:  ['cam', 'local_xy', 'local_heading', 'world_dheading', 'local_dxy', 'local_rot', 'local_z']
+
+    loss_cfg:
+      rel_transform:
+        trans_weight: 0.0
+        weight: 200
+
+      kp_2d:
+        weight: 1.0
+        min_conf: 0.3
+      kp_2d_dist:
+        weight: 1.0
+        min_conf: 0.3
+        monitor_only: true
+
+      cam_traj_rot:
+        rot_type: 6d
+        weight: 1.e+5
+
+      traj_rot_smoothness:
+        weight: 1.e+3
+
+      # reg loss
+      local_traj_dxy_reg:
+        weight: 3.e+2
+      local_traj_dheading_reg_new:
+        weight: 3.e+3
+      local_traj_rot_reg:
+        weight: 5.e+3
+      local_traj_z_reg:
+        weight: 1.e+2
+      cam_inv_trans_residual_reg:
+        weight: 1.e+2
+
+      # camera loss
+      cam_inv_rot_smoothness:
+        weight: 1.e+3
+      cam_origin_smoothness:
+        weight: 1.e+3
+      cam_up_reg:
+        weight: 1.e+2

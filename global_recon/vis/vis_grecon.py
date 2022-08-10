@@ -211,7 +211,7 @@ class GReconVisualizer(Visualizer3D):
 
         
         vertices = self.gt[0]['smpl_verts'][0] if len(self.gt) > 0 else self.scene_dict[0]['smpl_verts'][0]
-        colors = ['#33b400', '#8e95f2', '#f0dcfc', '#63C328', 'purple', 'orange', 'white', '#e0c3fc']
+        colors = ['#33b400', '#8e95f2', 'orange', 'white', 'purple', 'cyan', 'blue', 'pink', 'red', 'green', 'yellow', 'black']
         self.smpl_actors = [SMPLActor(self.pl, vertices, self.smpl_faces, visible=False, color=color) for _, color in zip(range(self.num_person), colors)]
         self.smpl_gt_actors = [SMPLActor(self.pl, vertices, self.smpl_faces, visible=False) for _ in range(self.num_person)]
         self.skeleton_actors = [SkeletonActor(self.pl, self.smpl_joint_parents, bone_color='yellow', joint_color='green', visible=False) for _ in range(self.num_person)]
