@@ -28,3 +28,4 @@ pytube
 pyyaml
 pynvml
 opencv-python
+git+https://github.com/mmatl/pyopengl.git#egg=pyopengl
