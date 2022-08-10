@@ -6,19 +6,17 @@ import glob
 import numpy as np
 import argparse
 import yaml
-import shutil
 from lib.utils.vis import video_to_images
 
 
-def run_pose_est_on_video(video_file, output_dir, pose_est_model, cached_pose, gpu_index=0):
+def run_pose_est_on_video(video_file, output_dir, pose_est_model, cached_pose, gpu_index=0, multi=False):
     if pose_est_model == 'hybrik':
         if not (cached_pose and osp.exists(f'{output_dir}/pose.pkl')):
             image_folder = osp.join(output_dir, 'frames')
             video_to_images(video_file, image_folder, fps=30)
             conda_path = os.environ["CONDA_PREFIX"].split('/envs')[0]
-            cmd = f'{conda_path}/envs/hybrik/bin/python ../pose_est/hybrik_demo/demo.py --img_folder {osp.abspath(image_folder)} --out_dir {osp.abspath(output_dir)} --gpu {gpu_index}'
+            cmd = f'{conda_path}/envs/hybrik/bin/python ../pose_est/hybrik_demo/demo.py --img_folder {osp.abspath(image_folder)} --out_dir {osp.abspath(output_dir)} --gpu {gpu_index} --multi {multi}'
             subprocess.run(cmd.split(' '), cwd='./HybrIK')
-            # shutil.rmtree(f'{output_dir}/frames')
 
 
 if __name__ == "__main__":
