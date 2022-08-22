@@ -15,7 +15,7 @@ from torch.utils.data import DataLoader
 from motion_infiller.data.amass_dataset import AMASSDataset
 from motion_infiller.models import model_dict
 from motion_infiller.utils.config import Config
-from lib.utils.logging import TextLogger
+from lib.utils.log_utils import TextLogger
 from lib.utils.tools import worker_init_fn, find_last_version, get_checkpoint_path
 
 

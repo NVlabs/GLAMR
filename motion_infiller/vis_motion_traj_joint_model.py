@@ -13,7 +13,7 @@ from motion_infiller.models.motion_traj_joint_model import MotionTrajJointModel
 from lib.utils.tools import worker_init_fn
 from lib.utils.vis import hstack_videos
 from lib.utils.torch_utils import tensor_to
-from lib.utils.logging import create_logger
+from lib.utils.log_utils import create_logger
 
 
 parser = argparse.ArgumentParser()

@@ -8,7 +8,7 @@ import pickle
 import cv2 as cv
 import shutil
 import argparse
-from lib.utils.logging import create_logger
+from lib.utils.log_utils import create_logger
 from lib.utils.vis import get_video_num_fr, get_video_fps, hstack_video_arr, get_video_width_height, video_to_images
 from global_recon.utils.config import Config
 from global_recon.models import model_dict

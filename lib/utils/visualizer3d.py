@@ -1,3 +1,5 @@
+import sys
+sys.path.append('./')
 import pyvista
 import time
 import math
@@ -258,6 +260,5 @@ class Visualizer3D:
 
 
 if __name__ == '__main__':
-
     visualizer = Visualizer3D(add_cube=True, enable_shadow=True)
     visualizer.show_animation(show_axes=True)
