@@ -1,5 +1,6 @@
 import sys
-sys.path.append('./')
+if __name__ == '__main__':
+    sys.path.append('./')
 import pyvista
 import time
 import math
