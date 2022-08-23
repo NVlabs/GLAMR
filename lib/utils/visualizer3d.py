@@ -19,6 +19,9 @@ class Visualizer3D:
 
     def __init__(self, init_T=6, enable_shadow=False, anti_aliasing=True, use_floor=True,
                  add_cube=False, distance=5, elevation=20, azimuth=0, verbose=True):
+        if platform.system() == 'Linux':
+            print('Attention: Your OS may not support anti-aliasing, but you can try to turn in on in lib.utils.visualizer3d.__init__() to improve rendering quality.')
+            anti_aliasing = False
         self.enable_shadow = enable_shadow
         self.anti_aliasing = anti_aliasing
         self.use_floor = use_floor
