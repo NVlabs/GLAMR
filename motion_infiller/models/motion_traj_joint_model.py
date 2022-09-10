@@ -28,7 +28,6 @@ class MotionTrajJointModel:
         self.smpl = SMPL(SMPL_MODEL_DIR, pose_type='body26fk', create_transl=False).to(device)
         self.load_motion_infiller()
         self.load_trajectory_predictor()
-        self.load_motion_infiller_wtraj()
 
     def load_motion_infiller(self):
         if 'mfiller_cfg' in self.specs:
@@ -39,7 +38,8 @@ class MotionTrajJointModel:
                 version = find_last_version(self.mfiller_cfg.cfg_dir) if version is None else version
                 checkpoint_dir = f'{self.mfiller_cfg.cfg_dir}/version_{version}/checkpoints'
                 self.mfiller_cp = model_cp = get_checkpoint_path(checkpoint_dir, cp=self.specs.get('mfiller_cp', 'best'))
-                self.log.info(f'loading motion infiller from check point {model_cp}')
+                if self.log is not None:
+                    self.log.info(f'loading motion infiller from check point {model_cp}')
                 # model
                 self.mfiller = mfiller_model_dict[self.mfiller_cfg.model_name].load_from_checkpoint(model_cp, cfg=self.mfiller_cfg, strict=False)
             else:
@@ -51,24 +51,6 @@ class MotionTrajJointModel:
         else:
             self.mfiller = self.mfiller_cfg = self.mfiller_cp = None
 
-    def load_motion_infiller_wtraj(self):
-        if 'mfiller_wtraj_cfg' in self.specs:
-            self.mfiller_wtraj_cfg = MFillerConfig(self.specs['mfiller_wtraj_cfg'], training=False)
-            # checkpoint
-            version = self.specs.get('mfiller_wtraj_version', None)
-            version = find_last_version(self.mfiller_wtraj_cfg.cfg_dir) if version is None else version
-            checkpoint_dir = f'{self.mfiller_wtraj_cfg.cfg_dir}/version_{version}/checkpoints'
-            self.mfiller_wtraj_cp = model_cp = get_checkpoint_path(checkpoint_dir, cp=self.specs.get('mfiller_wtraj_cp', 'best'))
-            self.log.info(f'loading motion infiller w/ traj from check point {model_cp}')
-            # model
-            self.mfiller_wtraj = mfiller_model_dict[self.mfiller_wtraj_cfg.model_name].load_from_checkpoint(model_cp, cfg=self.mfiller_wtraj_cfg, strict=False)
-            self.mfiller_wtraj.to(self.device)
-            self.mfiller_wtraj.eval()
-            for param in self.mfiller_wtraj.parameters():
-                param.requires_grad_(False)
-        else:
-            self.mfiller_wtraj = self.mfiller_wtraj_cfg = self.mfiller_wtraj_cp = None
-
     def load_trajectory_predictor(self):
         if 'trajpred_cfg' in self.specs:
             self.trajpred_cfg = TrajPredConfig(self.specs['trajpred_cfg'], training=False)
@@ -77,7 +59,8 @@ class MotionTrajJointModel:
             version = find_last_version(self.trajpred_cfg.cfg_dir) if version is None else version
             checkpoint_dir = f'{self.trajpred_cfg.cfg_dir}/version_{version}/checkpoints'
             self.trajpred_cp = model_cp = get_checkpoint_path(checkpoint_dir, cp=self.specs.get('trajpred_cp', 'best'))
-            self.log.info(f'loading trajectory predictor from check point {model_cp}')
+            if self.log is not None:
+                self.log.info(f'loading trajectory predictor from check point {model_cp}')
             # model
             self.traj_predictor = traj_model_dict[self.trajpred_cfg.model_name].load_from_checkpoint(model_cp, cfg=self.trajpred_cfg, strict=False)
             self.traj_predictor.to(self.device)
@@ -159,8 +142,4 @@ class MotionTrajJointModel:
         data = self.mfiller.inference(batch, sample_num, recon, self.multi_step_mfiller)
         if self.traj_predictor is not None:
             self.pred_trajectory(data, sample_num, recon, self.multi_step_trajpred)
-        return data
-
-    def inference_with_traj(self, batch, sample_num=1, recon=False):
-        data = self.mfiller_wtraj.inference(batch, sample_num, recon, self.multi_step_mfiller)
         return data

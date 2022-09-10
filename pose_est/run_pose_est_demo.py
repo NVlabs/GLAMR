@@ -9,14 +9,23 @@ import yaml
 from lib.utils.vis import video_to_images
 
 
-def run_pose_est_on_video(video_file, output_dir, pose_est_model, cached_pose, gpu_index=0, multi=False):
+def run_pose_est_on_video(video_file, output_dir, pose_est_model, image_dir=None, bbox_file=None, cached_pose=True, gpu_index=0, multi=False):
+    if cached_pose and osp.exists(f'{output_dir}/pose.pkl'):
+        return
+
+    if image_dir is None:
+        image_folder = osp.join(output_dir, 'frames')
+        video_to_images(video_file, image_folder, fps=30)
+    else:
+        image_folder = image_dir
+    conda_path = os.environ["CONDA_PREFIX"].split('/envs')[0]
+
     if pose_est_model == 'hybrik':
-        if not (cached_pose and osp.exists(f'{output_dir}/pose.pkl')):
-            image_folder = osp.join(output_dir, 'frames')
-            video_to_images(video_file, image_folder, fps=30)
-            conda_path = os.environ["CONDA_PREFIX"].split('/envs')[0]
+        if bbox_file is None:
             cmd = f'{conda_path}/envs/hybrik/bin/python ../pose_est/hybrik_demo/demo.py --img_folder {osp.abspath(image_folder)} --out_dir {osp.abspath(output_dir)} --gpu {gpu_index} --multi {1 if multi else 0}'
-            subprocess.run(cmd.split(' '), cwd='./HybrIK')
+        else:
+            cmd = f'{conda_path}/envs/hybrik/bin/python ../pose_est/hybrik_demo/demo_dataset.py --img_folder {osp.abspath(image_folder)} --out_dir {osp.abspath(output_dir)} --bbox_file {osp.abspath(bbox_file)} --gpu {gpu_index}'
+        subprocess.run(cmd.split(' '), cwd='./HybrIK')
 
 
 if __name__ == "__main__":
@@ -46,7 +55,7 @@ if __name__ == "__main__":
         print(f'estimating pose for {video_path}')
         output_dir = osp.join(output_path, osp.splitext(osp.basename(video_path))[0])
 
-        run_pose_est_on_video(video_path, output_dir, args.pose_est_model, args.cached_pose)
+        run_pose_est_on_video(video_path, output_dir, args.pose_est_model, cached_pose=args.cached_pose)
 
     else:
         files = sorted(glob.glob(f'{video_path}/{args.glob_pattern}.mp4'))
@@ -63,4 +72,4 @@ if __name__ == "__main__":
             seq_video_path = f'{video_path}/{seq_name}.mp4'
             output_dir = f'{output_path}/{seq_name}'
 
-            run_pose_est_on_video(seq_video_path, output_dir, args.pose_est_model, args.cached_pose)
+            run_pose_est_on_video(seq_video_path, output_dir, args.pose_est_model, cached_pose=args.cached_pose)
