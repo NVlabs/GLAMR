@@ -23,6 +23,7 @@ GLAMR: Global Occlusion-Aware Human Mesh Recovery with Dynamic Cameras
     - [Multi-Person Videos](#multi-person-videos)
 - [Datasets](#datasets)
 - [Motion Infiller](#motion-infiller)
+- [Evaluation](#evaluation)
 - [Trajectory Predictor](#trajectory-predictor)
 - [Joint Motion Infiller and Trajectory Predictor](#joint-motion-infiller-and-trajectory-predictor)
 - [Citation](#citation)
