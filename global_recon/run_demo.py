@@ -110,10 +110,11 @@ if args.save_video:
     visualizer = GReconVisualizer(out_dict, coord='world', verbose=False, show_camera=False,
                                   render_cam_pos=render_specs.get('cam_pos', None), render_cam_focus=render_specs.get('cam_focus', None))
     visualizer.save_animation_as_video(video_world, window_size=render_specs.get('wsize', (int(1.5 * img_h), img_h)), cleanup=True, crf=5)
-
+    print(f'Saved results at: {video_world}')
     log.info(f'saving cam animation for {seq_name}')
     visualizer = GReconVisualizer(out_dict, coord='cam_in_world', verbose=False, background_img_dir=frame_dir)
     visualizer.save_animation_as_video(video_cam, window_size=(img_w, img_h), cleanup=True)
 
     log.info(f'saving side-by-side animation for {seq_name}')
-    hstack_video_arr([pose_est_video, video_cam, video_world], video_sbs, text_arr=[pose_est_model_name, 'GLAMR (Cam)', 'GLAMR (World)'], text_color='blue', text_size=img_h // 16, verbose=False)
+    hstack_video_arr([pose_est_video, video_cam, video_world], video_sbs, verbose=False)
+    print(f'Saved results at: {video_sbs}')

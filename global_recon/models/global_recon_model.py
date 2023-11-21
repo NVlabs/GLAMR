@@ -2,6 +2,7 @@ import time
 import os
 import torch
 import numpy as np
+from scipy.spatial.transform import Rotation as R
 from scipy.interpolate import interp1d
 from lib.models.smpl import SMPL, SMPL_MODEL_DIR
 from lib.utils.geometry import perspective_projection
@@ -99,7 +100,14 @@ class GlobalReconOptimizer:
                 new_dict['invis_frames'] = invis_frames = visible == 0
                 new_dict['frame2ind'] = {f: i for i, f in enumerate(new_dict['frames'])}
                 new_dict['scale'] = None
-                smpl_pose_wroot = quaternion_to_angle_axis(torch.tensor(pose_dict[f'smpl_pose_quat_wroot'], device=self.device)).cpu().numpy()
+
+                ## Credits: https://github.com/NVlabs/GLAMR/issues/34#issuecomment-1671664667
+                hybrik_poses_rot = pose_dict['smpl_pose_quat_wroot']
+                batch_size = hybrik_poses_rot.shape[0]
+                smpl_pose_wroot = R.as_rotvec(R.from_matrix(hybrik_poses_rot.reshape((-1, 3, 3)))).reshape((batch_size, -1, 3))
+                smpl_pose_wroot = smpl_pose_wroot.astype(np.float32)
+                # smpl_pose_wroot = quaternion_to_angle_axis(torch.tensor(pose_dict[f'smpl_pose_quat_wroot'], device=self.device)).cpu().numpy()
+                # new_dict['smpl_pose'] = smpl_pose_wroot[:, 1:].reshape(-1, 69)
                 new_dict['smpl_pose'] = smpl_pose_wroot[:, 1:].reshape(-1, 69)
                 if idx in in_dict['gt']:
                     new_dict['smpl_pose_gt'] = in_dict['gt'][idx]['pose'][:, 3:]

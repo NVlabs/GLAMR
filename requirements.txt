@@ -15,7 +15,7 @@ tqdm
 scikit-image
 scikit-learn
 scipy
-sklearn
+scikit-learn
 chumpy
 pytorch-lightning==1.3.5
 pyvista==0.31.3

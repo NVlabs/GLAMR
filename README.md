@@ -53,7 +53,8 @@ GLAMR: Global Occlusion-Aware Human Mesh Recovery with Dynamic Cameras
     pip install -r requirements.txt
     ```
 5. Download [SMPL](https://smpl.is.tue.mpg.de/) models & joint regressors and place them in the `data` folder. You can obtain the model following [SPEC](https://github.com/mkocabas/SPEC)'s instructions [here](https://github.com/mkocabas/SPEC/blob/master/scripts/prepare_data.sh).
-
+6. Download `pretrained_w_cam.pth` from [Google Drive](https://drive.google.com/uc?id=16Y_MGUynFeEzV8GVtKTE5AtkHSi3xsF9)
+  
 ### Pretrained Models
 * You can download [third-party](https://github.com/YanglanOu) pretrained models from [Google Drive](https://drive.google.com/file/d/1_3h0DExyHkPH9cv1O8Y42YPI3c08G-2b/view?usp=sharing) or [BaiduYun](https://pan.baidu.com/s/1nvSzfuffB5yBaZ3GRBDC5w?pwd=pj3z).
 * Once the `glamr_models.zip` file is downloaded, unzipping it will create the `results` folder:
