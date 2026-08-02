@@ -216,7 +216,7 @@ if opt.multi:
     mot_bboxes = defaultdict(dict)
     for idx in bbox_exist:
         mot_bboxes[idx]['id'] = idx
-        mot_bboxes[idx]['bbox'] = np.stack(bboxes[idx]),
+        mot_bboxes[idx]['bbox'] = np.stack(bboxes[idx])
         mot_bboxes[idx]['exist'] = np.array(bbox_exist[idx])
         
         find = np.where(mot_bboxes[idx]['exist'])[0]
