@@ -106,7 +106,7 @@ class SkeletonActor():
         rgb_color = parse_color(color)
         for actor in self.joint_actors:
             actor.GetProperty().SetColor(rgb_color)
-        for actor in self.jbone_actors:
+        for actor in self.bone_actors:
             actor.GetProperty().SetColor(rgb_color)
 
 
