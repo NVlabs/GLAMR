@@ -27,7 +27,7 @@ class AMASSDataset(Dataset):
             self.seq_prob = None
 
     def __len__(self):
-       return self.ntime_per_epoch // self.seq_len
+       return int(self.ntime_per_epoch) // self.seq_len
 
     def set_seq_len(self, seq_len):
         self.seq_len = seq_len        
