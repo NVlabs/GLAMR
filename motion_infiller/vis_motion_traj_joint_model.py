@@ -30,7 +30,7 @@ args = parser.parse_args()
 cfg = Config(args.cfg)
 seed_everything(args.seed, workers=False)
 device = torch.device('cuda', index=args.gpu) if torch.cuda.is_available() and args.gpu >= 0 else torch.device('cpu')
-torch.torch.set_grad_enabled(False)
+torch.set_grad_enabled(False)
 log = create_logger(f'{cfg.log_dir}/log.txt')
 
 # overwrite config for test need
