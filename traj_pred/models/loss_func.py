@@ -44,7 +44,8 @@ def compute_vae_z_kld(data, specs):
 
 
 def compute_local_orient_heading(data, specs):
-    local_traj = data[f'train_out_local_traj_tp']
+    mode = specs.get('mode', 'train')
+    local_traj = data[f'{mode}_out_local_traj_tp']
     local_orient = local_traj[..., 3:-2]
     if local_orient.shape[-1] == 6:
         local_orient = rot6d_to_quat(local_orient)
@@ -54,7 +55,8 @@ def compute_local_orient_heading(data, specs):
 
 
 def compute_dheading(data, specs):
-    local_traj = data[f'train_out_local_traj_tp']
+    mode = specs.get('mode', 'train')
+    local_traj = data[f'{mode}_out_local_traj_tp']
     local_heading_vec = local_traj[..., -2:]
     heading = vec_to_heading(local_heading_vec)
     mse = heading.pow(2).mean()
