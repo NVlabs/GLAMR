@@ -26,7 +26,7 @@ parser.add_argument('--vis_mode', default='smpl')
 parser.add_argument('--num_drop_fr', type=int, default=None)
 parser.add_argument('--num_seq', type=int, default=2)
 parser.add_argument('--num_motion_samp', type=int, default=3)
-parser.add_argument('--multi_step', action='store_true', default=True)
+parser.add_argument('--multi_step', action='store_false', default=True)
 parser.add_argument('--gpu', type=int, default=0)
 parser.add_argument('--seed', type=int, default=1)
 parser.add_argument('--start_ind', type=int, default=0)
@@ -37,7 +37,7 @@ args = parser.parse_args()
 cfg = Config(args.cfg, training=False)
 seed_everything(args.seed, workers=False)
 device = torch.device('cuda', index=args.gpu) if torch.cuda.is_available() and args.gpu >= 0 else torch.device('cpu')
-torch.torch.set_grad_enabled(False)
+torch.set_grad_enabled(False)
 
 # overwrite config for test need
 if args.num_drop_fr is not None:
