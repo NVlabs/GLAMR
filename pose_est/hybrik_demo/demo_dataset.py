@@ -85,7 +85,7 @@ transformation = SimpleTransform3DSMPL(
     input_size=cfg.MODEL.IMAGE_SIZE,
     output_size=cfg.MODEL.HEATMAP_SIZE,
     depth_dim=cfg.MODEL.EXTRA.DEPTH_DIM,
-    bbox_3d_shape=(2.2, 2,2, 2.2),
+    bbox_3d_shape=(2.2, 2.2, 2.2),
     rot=cfg.DATASET.ROT_FACTOR, sigma=cfg.MODEL.EXTRA.SIGMA,
     train=False, add_dpg=False,
     loss_type=cfg.LOSS['TYPE'])
