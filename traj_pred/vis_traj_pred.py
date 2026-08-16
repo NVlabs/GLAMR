@@ -34,7 +34,7 @@ args = parser.parse_args()
 cfg = Config(args.cfg, training=False)
 seed_everything(args.seed, workers=False)
 device = torch.device('cuda', index=args.gpu) if torch.cuda.is_available() and args.gpu >= 0 else torch.device('cpu')
-torch.torch.set_grad_enabled(False)
+torch.set_grad_enabled(False)
 
 cfg.seq_sampling_method = 'length'
 seq_len = cfg.seq_len if args.seq_len == -1 else args.seq_len
@@ -67,6 +67,7 @@ for i, batch in enumerate(test_dataloader):
     
     prefix = 'multistep_' if args.multi_step else 'singlestep_'
     vid_name = f'out/vis_traj_pred/{cfg.id}/v{version}_{cp_name}/{args.split}/{prefix}seq_len_{seq_len}/sd{args.seed}_s{i}_%s.mp4'
+    os.makedirs(os.path.dirname(vid_name % 'gt'), exist_ok=True)
     # save GT
     visualizer.save_animation_as_video(
         vid_name % 'gt', init_args={'smpl_seq': output, 'mode': 'gt'}, window_size=(1500, 1500), cleanup=True
