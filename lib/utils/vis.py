@@ -182,7 +182,7 @@ def make_checker_board_texture(color1='black', color2='white', width=1000, heigh
     c1 = np.asarray(ImageColor.getcolor(color1, 'RGB')).astype(np.uint8)
     c2 = np.asarray(ImageColor.getcolor(color2, 'RGB')).astype(np.uint8)
     hw = width // 2
-    hh = width // 2
+    hh = height // 2
     c1_block = np.tile(c1, (hh, hw, 1))
     c2_block = np.tile(c2, (hh, hw, 1))
     tex = np.block([
