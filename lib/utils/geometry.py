@@ -25,7 +25,7 @@ def perspective_projection(p3d, K, t_form=None):
     p2d = p2d[:, :, :2] / (p2d[:, :, 2:] + 1e-8)
 
     if t_form is not None:
-        ones = torch.ones((p2d.shape[0], p2d.shape[1], 1)).cuda().float()
+        ones = torch.ones_like(p2d[:, :, :1])
         p2d = torch.cat((p2d, ones), dim=2)
         p2d = torch.matmul(p2d, t_form.transpose(2,1))
         p2d = p2d[:,:,:2]
