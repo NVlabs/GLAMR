@@ -137,7 +137,7 @@ def convert_h36m(h36m_folder, h36m_out_folder, subject_id, smpl_fit_data=None, u
                 assert str(i) == key
                 seq['gt_jpos'].append(np.array(gt_jpos_dict[key]) * 0.001)
             seq['gt_jpos'] = np.stack(seq['gt_jpos'])[::2]      # 25fps
-            assert(len(seq['gt_jpos'] == num_fr))
+            assert(len(seq['gt_jpos']) == num_fr)
 
             if use_smpl_fit:
                 smpl_fit_seq = smpl_fit_data[smpl_fit_seq_names[seq_ind]]
@@ -317,8 +317,8 @@ if __name__=='__main__':
     parser.add_argument('--h36m_folder', default="datasets/H36M")
     parser.add_argument('--h36m_out_folder', default="datasets/H36M/processed_v1")
     parser.add_argument('--subjects', default="1,5,6,7,8,9,11")
-    parser.add_argument('--convert_image', action='store_true', default=True)
-    parser.add_argument('--use_smpl_fit', action='store_true', default=True)
+    parser.add_argument('--convert_image', action='store_true', default=False)
+    parser.add_argument('--use_smpl_fit', action='store_true', default=False)
     parser.add_argument('--cached', action='store_true', default=False)
     parser.add_argument('--video', action='store_true', default=False)
     args = parser.parse_args()
