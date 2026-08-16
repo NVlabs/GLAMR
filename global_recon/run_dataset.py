@@ -64,7 +64,7 @@ dataset_paths = dataset_paths_dict[args.dataset]
 grecon_model = model_dict[cfg.grecon_model_name](cfg, device, None)
 
 
-for i, seq_name in enumerate(sequences[7:]):
+for i, seq_name in enumerate(sequences):
     for seed in seeds:
         print(f'{i}/{len(sequences)} seed {seed} processing {seq_name} for {args.dataset}..')
         seq_image_dir = f"{dataset_paths['image']}/{seq_name}"
