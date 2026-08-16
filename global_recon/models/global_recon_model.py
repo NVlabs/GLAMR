@@ -359,7 +359,7 @@ class GlobalReconOptimizer:
             }
             if self.mt_model.traj_predictor is not None and self.mt_model.traj_predictor.in_joint_pos_only:
                 batch['shape'] = pose_dict['smpl_beta'][exist_fr].unsqueeze(0)
-                batch['scale'] = pose_dict['scale'][exist_fr].unsqueeze(0)
+                batch['scale'] = pose_dict['scale'][exist_fr].unsqueeze(0) if pose_dict['scale'] is not None else None
                 
             if self.flag_opt_motion_latent:
                 batch['in_motion_latent'] = pose_dict['motion_latent']
@@ -470,7 +470,7 @@ class GlobalReconOptimizer:
             pose_dict['person_transform_world'] = make_transform(pose_dict['smpl_orient_world'], pose_dict['root_trans_world'], rot_type='axis_angle')
 
         """ form camera parameters """
-        if self.flag_opt_cam and opt_meta['stage'] != 'init':
+        if self.flag_opt_cam:
             if 'cam' in opt_variables:
                 if self.flag_fixed_cam:
                     data['cam_rot_6d'] = data['cam_rot_6d_fix'].expand(data['cam_pose'].shape[0], -1)
