@@ -33,12 +33,12 @@ if torch.cuda.is_available() and args.gpu >= 0:
     torch.cuda.set_device(args.gpu)
 else:
     device = torch.device('cpu')
-torch.torch.set_grad_enabled(False)
+torch.set_grad_enabled(False)
 
 evaluator = Evaluator(results_dir, args.dataset, device=device, log_file=f'{results_dir}/log_eval.txt', compute_sample=multi_seeds)
 seed_evaluator = Evaluator(results_dir, args.dataset, device=device, log_file=f'{results_dir}/log_eval_seed.txt', compute_sample=multi_seeds)
 
-for sind, seq_name in enumerate(sequences[:2]):
+for sind, seq_name in enumerate(sequences):
     metrics_dict_arr = []
     evaluator.log.info(f'{sind}/{len(sequences)} evaluating global reconstruction for {seq_name}')
 
