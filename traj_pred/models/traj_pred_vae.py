@@ -159,7 +159,7 @@ class DataEncoder(nn.Module):
     def forward(self, data):
         context = data['context']
         if self.input == 'global_traj':
-            orient_key = {'axis_angle': '', '6d': '_6d', 'quat': '_q_'}[self.orient_type]
+            orient_key = {'axis_angle': 'orient_tp', '6d': 'orient_6d_tp', 'quat': 'orient_q_tp'}[self.orient_type]
             x_in = torch.cat([data['trans_tp'], data[orient_key]], dim=-1)
         elif self.input == 'init_heading_coord':
             init_heading_orient, init_heading_trans = convert_traj_world2heading(data['orient_q_tp'], data['trans_tp'])
@@ -192,7 +192,7 @@ class DataEncoder(nn.Module):
         if self.pooling == 'mean':
             x = x.mean(dim=0)
         else:
-            x = x.max(dim=0)
+            x = x.max(dim=0)[0]
 
         q_z_params = self.q_z_net(x)
         data['q_z_dist'] = Normal(params=q_z_params)
@@ -277,8 +277,9 @@ class DataDecoder(nn.Module):
             if self.pooling == 'mean':
                 h = context.mean(dim=0)
             else:
-                h = context.max(dim=0)
-            h = self.prior_mlp(h)
+                h = context.max(dim=0)[0]
+            if self.prior_mlp is not None:
+                h = self.prior_mlp(h)
             p_z_params = self.p_z_net(h)
             data['p_z_dist' + ('_infer' if mode == 'infer' else '')] = Normal(params=p_z_params)
         else:
