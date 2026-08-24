@@ -406,7 +406,7 @@ class TrajPredVAE(pl.LightningModule):
             else:
                 data['joint_pos_tp'] = self.get_joint_pos(data['body_pose_tp'])
                 data['joint_pos'] = data['joint_pos_tp'].transpose(0, 1).contiguous()
-            if self.data_encoder.use_jvel or self.data_decoder.use_jvel:
+            if self.data_encoder.use_jvel or self.data_decoder.use_jvel or self.context_encoder.use_jvel:
                 data['joint_vel_tp'] = (data['joint_pos_tp'][1:] - data['joint_pos_tp'][:-1]) * 30  # 30 fps
                 data['joint_vel_tp'] = torch.cat([data['joint_vel_tp'][[0]], data['joint_vel_tp']], dim=0)
 
@@ -502,7 +502,13 @@ class TrajPredVAE(pl.LightningModule):
         if sind == 0:
             data[f'{mode}_out_local_traj_tp'] = cur_data[f'{mode}_out_local_traj_tp'][:num_fr]
         else:
-            cur_data[f'{mode}_orig_out_local_traj_tp'][0, ..., 9:]  = heading_to_vec(get_heading(rot6d_to_quat(data[f'{mode}_out_local_traj_tp'][-1, ..., 3:-2])))
+            local_orient = data[f'{mode}_out_local_traj_tp'][-1, ..., 3:-2]
+            if self.local_orient_type == '6d':
+                last_q = rot6d_to_quat(local_orient)
+            else:
+                last_q = torch.cat([local_orient, torch.zeros_like(local_orient[..., [0]])], dim=-1)
+                last_q = normalize(last_q)
+            cur_data[f'{mode}_orig_out_local_traj_tp'][0, ..., 9:] = heading_to_vec(get_heading(last_q))
             data[f'{mode}_out_local_traj_tp'] = torch.cat([data[f'{mode}_out_local_traj_tp'], cur_data[f'{mode}_orig_out_local_traj_tp'][:num_fr]], dim=0)
 
     def inference_multi_step(self, batch, sample_num, recon):
@@ -548,7 +554,7 @@ class TrajPredVAE(pl.LightningModule):
         return data
 
     def decode_only(self, data, z=None, mode='recon', sample_num=1):
-        self.data_decoder(data, mode, sample_num=sample_num, z=z)
+        self.data_decoder(data, mode, sample_num=sample_num)
         self.convert_out_pose_trans(data, mode, sample_num=sample_num)
         return data
 
